@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using BusinessObjects.Models;
 using Repositories;
 using Repositories.Implement;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
+    [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
         private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();

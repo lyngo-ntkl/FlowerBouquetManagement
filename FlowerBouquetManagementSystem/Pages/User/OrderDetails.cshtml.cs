@@ -5,14 +5,14 @@ using Repositories.Implement;
 using Repositories;
 using System.Collections.Generic;
 
-namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
+namespace FlowerBouquetManagementSystem.Pages.User
 {
-    public class DetailsModel : PageModel
+    public class OrderDetailsModel : PageModel
     {
         private readonly OrderRepository _orderRepository = new OrderRepositoryImpl();
         private readonly OrderDetailRepository _orderDetailRepository = new OrderDetailRepositoryImpl();
 
-        public DetailsModel()
+        public OrderDetailsModel()
         {
         }
 

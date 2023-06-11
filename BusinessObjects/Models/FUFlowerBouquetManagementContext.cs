@@ -145,7 +145,9 @@ namespace BusinessObjects.Models
 
                 entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
 
-                entity.Property(e => e.OrderDate).HasColumnType("datetime");
+                entity.Property(e => e.OrderDate)
+                .HasDefaultValue(DateTime.Now)
+                .HasColumnType("datetime");
 
                 entity.Property(e => e.OrderStatus)
                     .HasMaxLength(10)

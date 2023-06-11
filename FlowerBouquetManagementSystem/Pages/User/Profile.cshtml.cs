@@ -4,31 +4,34 @@ using BusinessObjects.Models;
 using Repositories.Implement;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using System.Security.Claims;
+using System;
+using System.Linq;
 
-namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
+namespace FlowerBouquetManagementSystem.Pages.User
 {
-    [Authorize(Roles = "Admin")]
-    public class EditModel : PageModel
+    [Authorize(Roles = "User")]
+    public class ProfileModel : PageModel
     {
         private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
 
-        public EditModel()
+        public ProfileModel()
         {
         }
 
         [BindProperty]
         public Customer Customer { get; set; }
 
-        public IActionResult OnGet(int? id)
+        public IActionResult OnGet()
         {
-            if (id == null)
+            var claims = User.Claims.FirstOrDefault(claim => claim.Type.Equals(ClaimTypes.Sid)).Value;
+            if (claims == null)
             {
                 ModelState.AddModelError("NotFound", "Customer not found");
                 return Page();
             }
 
-            Customer = _customerRepository.FindCustomerById(id.Value);
+            Customer = _customerRepository.FindCustomerById(Int32.Parse(claims));
 
             if (Customer == null)
             {

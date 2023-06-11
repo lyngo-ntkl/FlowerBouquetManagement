@@ -21,9 +21,11 @@ namespace BusinessObjects.Models
         public int CategoryId { get; set; }
         [Required(ErrorMessage = "Flower bouquet name is required")]
         [DisplayName("Flower Bouquet Name")]
+        [MaxLength(40, ErrorMessage = "Maximum character is 40")]
         public string FlowerBouquetName { get; set; }
         [Required(ErrorMessage = "Description is required")]
         [DisplayName("Description")]
+        [MaxLength(220, ErrorMessage = "Maximum character is 220")]
         public string Description { get; set; }
         [Required(ErrorMessage = "Unit price is required")]
         [DisplayName("Unit Price")]

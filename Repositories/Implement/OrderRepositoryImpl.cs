@@ -10,6 +10,10 @@ namespace Repositories.Implement
 
         public Order FindOrderById(int id) => OrderDAO.FindOrderById(id);
 
+        public List<Order> FindOrderByCustomerId(int customerId) => OrderDAO.FindOrderByCustomerId(customerId);
+
+        public Order FindOrderByIdIncludeOrderDetails(int orderId) => OrderDAO.FindOrderByIdIncludeOrderDetails(orderId);
+
         public Order FindOrderByIdIncludeCustomer(int orderId) => OrderDAO.FindOrderByIdIncludeCustomer(orderId);
 
         public List<Order> GetOrders() => OrderDAO.GetOrders();

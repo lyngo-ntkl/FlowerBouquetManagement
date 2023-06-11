@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using BusinessObjects.Models;
 using Repositories.Implement;
 using Repositories;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
+    [Authorize(Roles = "Admin")]
     public class DeleteModel : PageModel
     {
         private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();

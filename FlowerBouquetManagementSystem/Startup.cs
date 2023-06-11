@@ -1,17 +1,10 @@
-using BusinessObjects.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FlowerBouquetManagementSystem
 {
@@ -50,10 +43,16 @@ namespace FlowerBouquetManagementSystem
                     options.LogoutPath = "/Logout";
                 })
             ;
-            services.AddAuthorization(options =>
+            services.AddAuthorization(
+                //options =>
+                //{
+                //    options.AddPolicy("AdminRole", policy => policy.RequireClaim("Role", "Admin"));
+                //    options.AddPolicy("UserRole", policy => policy.RequireClaim("Role", "User"));
+                //}
+            );
+            services.AddSession(options =>
             {
-                options.AddPolicy("AdminRole", policy => policy.RequireClaim("Role", "Admin"));
-                options.AddPolicy("UserRole", policy => policy.RequireClaim("Role", "User"));
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
             //services.AddDbContext<FUFlowerBouquetManagementContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FlowerBouquetStoreDB")));
         }
@@ -80,6 +79,8 @@ namespace FlowerBouquetManagementSystem
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

@@ -7,9 +7,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -62,15 +59,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
             </td>
-            <form method="post">
                 <td>
-                    <input type="hidden" value="@item.FlowerBouquetId"/>
-                    <input type="submit" value="Buy now" class="btn btn-primary"/>
+                    <a asp-page="Cart" asp-page-handler="buynow" asp-route-id="@item.FlowerBouquetId">Buy Now</a>
                 </td>
                 <td>
-                    <input type="submit" value="Add to Cart" class="btn btn-primary"/>
+                    <a asp-page="Cart" asp-page-handler="addtocart" asp-route-id="@item.FlowerBouquetId">Add To Cart</a>
                 </td>
-            </form>
         </tr>
 }
     </tbody>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObjects.Models;
 using Repositories.Implement;
 using Repositories;
+using System.Linq;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
 {
@@ -19,7 +20,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
 
         public IActionResult OnGet()
         {
-            ViewData["CustomerId"] = new SelectList(_customerRepository.GetCustomers(), "CustomerId", "CustomerName");
+            ViewData["CustomerId"] = new SelectList(_customerRepository.GetCustomers(), "Customer Email", "Email");
             return Page();
         }
 

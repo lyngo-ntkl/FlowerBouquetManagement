@@ -39,7 +39,7 @@ namespace FlowerBouquetManagementSystem.Pages
                 List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, CredentialObj.Email),
-                    new Claim("Role", "Admin")
+                    new Claim(ClaimTypes.Role, "Admin")
                 };
                 //ClaimsIdentity identity = new ClaimsIdentity(claims, "JwtSettings");
                 ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -56,14 +56,15 @@ namespace FlowerBouquetManagementSystem.Pages
                 {
                     new Claim(ClaimTypes.Email, Customer.Email),
                     new Claim(ClaimTypes.Name, Customer.CustomerName),
-                    new Claim("Role", "User")
+                    new Claim(ClaimTypes.Role, "User"),
+                    new Claim(ClaimTypes.Sid, Customer.CustomerId.ToString())
                 };
                 //ClaimsIdentity identity = new ClaimsIdentity(claims, "JwtSettings");
                 ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                 //await HttpContext.SignInAsync("JwtSettings", principal);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                return new RedirectResult("Index");
+                return new RedirectResult("/User/FlowerBouquetIndex");
             }
             else
             {

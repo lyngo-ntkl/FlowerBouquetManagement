@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObjects.Models;
 using Repositories.Implement;
 using Repositories;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
 {
+    [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();

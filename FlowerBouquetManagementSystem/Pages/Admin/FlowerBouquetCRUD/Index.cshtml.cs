@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
 {
-    [Authorize(Policy = "AdminRole")]
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();

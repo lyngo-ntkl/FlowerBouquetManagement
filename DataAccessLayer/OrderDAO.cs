@@ -40,6 +40,24 @@ namespace DataAccessLayer
             }
             return order;
         }
+        public static Order FindOrderByIdIncludeOrderDetails(int orderId)
+        {
+            Order order = new Order();
+            try
+            {
+                using (var context = new FUFlowerBouquetManagementContext())
+                {
+                    order = context.Orders
+                        .Include(o => o.OrderDetails)
+                        .SingleOrDefault(o => o.OrderId == orderId);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return order;
+        }
         public static Order FindOrderByIdIncludeCustomer(int orderId)
         {
             Order order = new Order();
