@@ -68,7 +68,7 @@ namespace BusinessObjects.Models
                 entity.ToTable("Customer");
 
                 entity.Property(e => e.CustomerId)
-                    .ValueGeneratedNever()
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("CustomerID");
 
                 entity.Property(e => e.Birthday).HasColumnType("date");
@@ -140,7 +140,7 @@ namespace BusinessObjects.Models
                 entity.ToTable("Order");
 
                 entity.Property(e => e.OrderId)
-                    .ValueGeneratedNever()
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("OrderID");
 
                 entity.Property(e => e.CustomerId).HasColumnName("CustomerID");

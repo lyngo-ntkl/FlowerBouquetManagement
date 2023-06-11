@@ -67,7 +67,7 @@ namespace DataAccessLayer
                 }
             } catch (Exception e)
             {
-                throw e;
+                throw new Exception(e.Message);
             }
             return orderDetail;
         }

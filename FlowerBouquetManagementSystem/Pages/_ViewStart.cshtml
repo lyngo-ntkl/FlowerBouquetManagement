@@ -1,3 +1,10 @@
-﻿@{
+﻿@*@{
+    Layout = "_Layout";
+}*@
+@if (User.Identity.IsAuthenticated)
+{
+    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+} else
+{
     Layout = "_Layout";
 }

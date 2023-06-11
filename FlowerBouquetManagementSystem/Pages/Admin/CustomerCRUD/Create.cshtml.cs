@@ -4,13 +4,13 @@ using BusinessObjects.Models;
 using Repositories;
 using Repositories.Implement;
 
-namespace FlowerBouquetManagementSystem.Pages
+namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
-    public class RegisterModel : PageModel
+    public class CreateModel : PageModel
     {
         private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
 
-        public RegisterModel()
+        public CreateModel()
         {
         }
 

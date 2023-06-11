@@ -4,14 +4,13 @@ using Repositories;
 using Repositories.Implement;
 using System.ComponentModel.DataAnnotations;
 using BusinessObjects.Models;
-using System.Xml.Linq;
-using System.Text;
 using System.Collections.Generic;
 using System.Security.Claims;
 using BusinessObjects;
 using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Configuration;
 
 namespace FlowerBouquetManagementSystem.Pages
 {
@@ -34,19 +33,20 @@ namespace FlowerBouquetManagementSystem.Pages
             // authentication
             // authorization
 
-            ViewData["Error"] = null;
-            if(CredentialObj.Email.Equals(AdminAccountInfo.Email) && CredentialObj.Password.Equals(AdminAccountInfo.Password))
+
+            if (CredentialObj.Email.Equals(AdminAccountInfo.Email) && CredentialObj.Password.Equals(AdminAccountInfo.Password))
             {
                 List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, CredentialObj.Email),
+                    new Claim("Role", "Admin")
                 };
                 //ClaimsIdentity identity = new ClaimsIdentity(claims, "JwtSettings");
-                ClaimsIdentity identity = new ClaimsIdentity(claims, "CookieSettings");
+                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                 //await HttpContext.SignInAsync("JwtSettings", principal);
-                await HttpContext.SignInAsync("CookieSettings", principal);
-                return new RedirectResult("Index");
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                return new RedirectResult("/Admin/FlowerBouquetCRUD/Index");
             }
 
             Customer = _customerRepository.FindCustomerByEmailAndPassword(CredentialObj.Email, CredentialObj.Password);
@@ -55,7 +55,8 @@ namespace FlowerBouquetManagementSystem.Pages
                 List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, Customer.Email),
-                    new Claim(ClaimTypes.Name, Customer.CustomerName)
+                    new Claim(ClaimTypes.Name, Customer.CustomerName),
+                    new Claim("Role", "User")
                 };
                 //ClaimsIdentity identity = new ClaimsIdentity(claims, "JwtSettings");
                 ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -66,7 +67,7 @@ namespace FlowerBouquetManagementSystem.Pages
             }
             else
             {
-                ViewData["Error"] = "Invalid email or password";
+                ModelState.AddModelError("NotFound", "Invalid email or password");
             }
 
             return Page();

@@ -1,4 +1,5 @@
 ﻿using BusinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,24 @@ namespace DataAccessLayer
                 using (var context = new FUFlowerBouquetManagementContext())
                 {
                     order = context.Orders.SingleOrDefault(o => o.OrderId == orderId);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return order;
+        }
+        public static Order FindOrderByIdIncludeCustomer(int orderId)
+        {
+            Order order = new Order();
+            try
+            {
+                using (var context = new FUFlowerBouquetManagementContext())
+                {
+                    order = context.Orders
+                        .Include(o => o.Customer)
+                        .SingleOrDefault(o => o.OrderId == orderId);
                 }
             }
             catch (Exception e)

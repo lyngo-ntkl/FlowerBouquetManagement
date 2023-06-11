@@ -27,6 +27,12 @@ namespace FlowerBouquetManagementSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRazorPages(
+            //options =>
+            //{
+            //    options.Conventions.AuthorizeFolder("/Admin");
+            //}
+            );
             services
                 //.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 //.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options));
@@ -35,12 +41,21 @@ namespace FlowerBouquetManagementSystem
                     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 })
-                .AddCookie()
-                //.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => options.Cookie.Name = "CookieSettings")
-                ;
-            services.AddRazorPages();
-            services.AddDbContext<FUFlowerBouquetManagementContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FlowerBouquetStoreDB")));
+                //.AddCookie()
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {
+                    options.Cookie.Name = "CookieSettings";
+                    options.LoginPath = "/Login";
+                    options.LogoutPath = "/Logout";
+                })
+            ;
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminRole", policy => policy.RequireClaim("Role", "Admin"));
+                options.AddPolicy("UserRole", policy => policy.RequireClaim("Role", "User"));
+            });
+            //services.AddDbContext<FUFlowerBouquetManagementContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FlowerBouquetStoreDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

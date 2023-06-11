@@ -18,9 +18,6 @@
         <div class="form-group">
             <input type="submit" value="Login" class="btn btn-primary" />
         </div>
-        @if(ViewData["Error"] != null)
-        {
-            <span>@ViewData["Error"]</span>
-        }
     </form>
+    <span class="text-danger">@Html.ValidationMessage("NotFound")</span>
 </div>
