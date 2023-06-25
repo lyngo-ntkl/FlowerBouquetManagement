@@ -4,7 +4,6 @@
 // Write your JavaScript code.
 
 $(() => {
-    //LoadFlowerBouquets()
     var connection = new signalR.HubConnectionBuilder().withUrl("/flowerHub").build();
     connection.start();
 
@@ -57,10 +56,19 @@ $(() => {
         $('#flowerTable').html(tr);
     }
 
+    var connectionCustomer = new signalR.HubConnectionBuilder().withUrl("/customerHub").build();
+    connectionCustomer.start();
+
+    connectionCustomer.on("LoadCustomer", function () {
+        LoadCustomers();
+    })
+
+    LoadCustomers();
+
     function LoadCustomers() {
         $.ajax({
             method: 'GET',
-            url: '/Admin/CustomerCRUD/Index',
+            url: '/Admin/CustomerCRUD/Index?handler=Customers',
             success: function (result) {
                 DrawCustomerTable(result);
             },
@@ -72,7 +80,6 @@ $(() => {
 
     function DrawCustomerTable(result) {
         var values = result.$values;
-        console.log(values);
         var tr = '';
         for (let i = 0; i < values.length; i++) {
             var v = values[i];
@@ -84,9 +91,9 @@ $(() => {
             <td>${v.password}</td>
             <td>${v.birthday}</td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.CustomerId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.CustomerId">Delete</a>
+                <a href="/Admin/CustomerCRUD/Edit?customerId=${v.customerId}">Edit</a> |
+                <a href="/Admin/CustomerCRUD/Details?customerId=${v.customerId}">Details</a> |
+                <a href="/Admin/CustomerCRUD/Delete?customerId=${v.customerId}">Delete</a>
             </td>
         </tr>`
         }

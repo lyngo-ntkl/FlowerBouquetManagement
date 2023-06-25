@@ -24,14 +24,14 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
 
         public FlowerBouquet FlowerBouquet { get; set; }
 
-        public async Task<IActionResult> OnGet(int? id)
+        public IActionResult OnGet(int? flowerBouquetId)
         {
-            if (id == null)
+            if (flowerBouquetId == null)
             {
                 return NotFound();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
+            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(flowerBouquetId.Value);
 
             if (FlowerBouquet == null)
             {

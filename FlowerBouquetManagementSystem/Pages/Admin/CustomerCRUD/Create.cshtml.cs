@@ -4,6 +4,8 @@ using BusinessObjects.Models;
 using Repositories;
 using Repositories.Implement;
 using Microsoft.AspNetCore.Authorization;
+using FlowerBouquetManagementSystem.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
@@ -11,9 +13,11 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
     public class CreateModel : PageModel
     {
         private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
+        private readonly IHubContext<CustomerHub> _hubContext;
 
-        public CreateModel()
+        public CreateModel(IHubContext<CustomerHub> hubContext)
         {
+            _hubContext = hubContext;
         }
 
         public IActionResult OnGet()
@@ -39,6 +43,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
             }
 
             _customerRepository.SaveCustomer(Customer);
+            _hubContext.Clients.All.SendAsync("LoadCustomer");
 
             return RedirectToPage("/Login");
         }
