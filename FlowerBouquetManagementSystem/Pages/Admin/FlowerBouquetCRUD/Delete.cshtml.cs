@@ -24,20 +24,18 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         [BindProperty]
         public FlowerBouquet FlowerBouquet { get; set; }
 
-        public IActionResult OnGet(int? id)
+        public IActionResult OnGet(int? flowerBouquetId)
         {
-            if (id == null)
+            if (flowerBouquetId == null)
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return NotFound();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
+            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(flowerBouquetId.Value);
 
             if (FlowerBouquet == null)
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return NotFound();
             }
             return Page();
         }
@@ -50,11 +48,11 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
             }
 
             FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetById(id.Value);
-            _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
 
             if (FlowerBouquet != null)
             {
                 _flowerBouquetRepository.DeleteFlowerBouquet(FlowerBouquet);
+                _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
             } else
             {
                 return NotFound();

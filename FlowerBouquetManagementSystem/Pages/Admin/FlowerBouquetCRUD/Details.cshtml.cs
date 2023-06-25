@@ -28,16 +28,14 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         {
             if (id == null)
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return NotFound();
             }
 
             FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
 
             if (FlowerBouquet == null)
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return NotFound();
             }
             return Page();
         }

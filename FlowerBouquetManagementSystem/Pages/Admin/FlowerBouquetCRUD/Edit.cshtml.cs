@@ -31,16 +31,14 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         {
             if (id == null)
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return RedirectToPage("./Edit");
+                return NotFound();
             }
             
             FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
 
             if (FlowerBouquet == null)
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return RedirectToPage("./Edit");
+                return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_categoryRepository.GetCategories(), "CategoryId", "CategoryName");
             ViewData["SupplierId"] = new SelectList(_supplierRepository.GetSuppliers(), "SupplierId", "SupplierName");
@@ -58,8 +56,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
 
             if(_flowerBouquetRepository.FindFlowerBouquetById(FlowerBouquet.FlowerBouquetId) == null)
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return RedirectToPage("./Edit");
+                return NotFound();
             }
 
             _flowerBouquetRepository.UpdateFlowerBouquet(FlowerBouquet);

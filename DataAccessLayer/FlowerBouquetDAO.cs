@@ -80,6 +80,25 @@ namespace DataAccessLayer
             }
             return flowerBouquets;
         }
+        //public static async Task<List<FlowerBouquet>> GetFlowerBouquetsWithCategoryAndSupplier()
+        //{
+        //    List<FlowerBouquet> flowerBouquets = new List<FlowerBouquet>();
+        //    try
+        //    {
+        //        using (var context = new FUFlowerBouquetManagementContext())
+        //        {
+        //            flowerBouquets = await context.FlowerBouquets
+        //                .Include(flowerBouquets => flowerBouquets.Category)
+        //                .Include(flowerBouquets => flowerBouquets.Supplier)
+        //                .ToListAsync();
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //    }
+        //    return flowerBouquets;
+        //}
         public static void SaveFlowerBouquet(FlowerBouquet flowerBouquet) 
         {
             try

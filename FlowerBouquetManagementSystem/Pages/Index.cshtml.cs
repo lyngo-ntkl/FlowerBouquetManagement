@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System;
 using System.Text.Json;
 
-namespace FlowerBouquetManagementSystem.Pages.Shared
+namespace FlowerBouquetManagementSystem.Pages
 {
     //[Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
@@ -26,20 +26,17 @@ namespace FlowerBouquetManagementSystem.Pages.Shared
 
         public IList<FlowerBouquet> FlowerBouquets { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGetFlowerBouquets()
         {
+            //FlowerBouquets = _flowerBouquetRepository.GetFlowerBouquets();
             FlowerBouquets = _flowerBouquetRepository.GetFlowerBouquetsWithCategoryAndSupplier();
-        }
-
-        public JsonResult OnGetFlowerBouquets()
-        {
-            Console.WriteLine("Testtttttt");
-            FlowerBouquets = _flowerBouquetRepository.GetFlowerBouquetsWithCategoryAndSupplier();
-            var a = new JsonResult(FlowerBouquets);
-            var b = a.ToString();
-            return a;
-            //JsonSerializer.Serialize(FlowerBouquets);
-            //return new JsonResult(FlowerBouquets);
+            //var a = new JsonResult(FlowerBouquets);
+            //var b = a.ToString();
+            //return a;
+            //var a = JsonSerializer.Serialize(FlowerBouquets);
+            //return a;
+            return new JsonResult(_flowerBouquetRepository.GetFlowerBouquets());
+            //return new OkObjectResult(FlowerBouquets);
         }
     }
 }

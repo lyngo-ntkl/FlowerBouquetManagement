@@ -44,7 +44,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
             _flowerBouquetRepository.SaveFlowerBouquet(FlowerBouquet);
             _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
         }
     }
 }

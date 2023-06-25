@@ -46,7 +46,7 @@ namespace FlowerBouquetManagementSystem.Pages
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                 //await HttpContext.SignInAsync("JwtSettings", principal);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                return new RedirectResult("/Admin/FlowerBouquetCRUD/Index");
+                return new RedirectResult("/Index");
             }
 
             Customer = _customerRepository.FindCustomerByEmailAndPassword(CredentialObj.Email, CredentialObj.Password);

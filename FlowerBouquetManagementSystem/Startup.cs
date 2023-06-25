@@ -27,9 +27,13 @@ namespace FlowerBouquetManagementSystem
             //{
             //    options.Conventions.AuthorizeFolder("/Admin");
             //}
-            ).AddJsonOptions(options => {
+            )
+            .AddJsonOptions(options => {
+            //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            }).AddRazorPagesOptions(options =>
+                //options.JsonSerializerOptions.MaxDepth = 64;
+            })
+            .AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Shared/Index", "");
             })

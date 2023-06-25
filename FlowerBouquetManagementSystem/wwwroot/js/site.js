@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 $(() => {
-    LoadFlowerBouquets()
+    //LoadFlowerBouquets()
     var connection = new signalR.HubConnectionBuilder().withUrl("/flowerHub").build();
     connection.start();
 
@@ -18,56 +18,78 @@ $(() => {
         $.ajax({
             method: 'GET',
             url: '/?handler=FlowerBouquets',
-            dataType: 'json',
             success: function (result) {
-                DrawTable(result);
+                DrawFlowerTable(result);
             },
-
-
-            //success: (result) => {
-            //    $.each(result, (k, v) => {
-            //        tr += `<tr>
-            //            <td>${v.FlowerBouquetName}</td>
-            //            <td>${v.Description}</td>
-            //            <td>${v.UnitPrice}</td>
-            //            <td>${v.UnitsInStock}</td>
-            //            <td>${v.FlowerBouquetStatus}</td>
-            //            <td>${v.Category.CategoryName}</td>
-            //            <td>${v.Supplier.SupplierName}</td>
-            //            <td>
-            //                <a asp-page="./Edit" asp-route-id="@item.FlowerBouquetId">Edit</a> |
-            //                <a asp-page="./Details" asp-route-id="@item.FlowerBouquetId">Details</a> |
-            //                <a asp-page="./Delete" asp-route-id="@item.FlowerBouquetId">Delete</a>
-            //            </td>
-            //        </tr>`
-            //    })
-            //    $("#flowerTable").html(tr);
-            //},
-
-
             error: (error) => {
                 console.log(error)
             }
         });
     }
 
-    function DrawTable(result) {
+    function DrawFlowerTable(result) {
+        var values = result.$values;
         var tr = '';
-        $.each(result, (k, v) => {
-            tr += `<tr>
-            <td>${v.FlowerBouquetName}</td>
-            <td>${v.Description}</td>
-            <td>${v.UnitPrice}</td>
-            <td>${v.UnitsInStock}</td>
-            <td>${v.FlowerBouquetStatus}</td>
+        //console.log(result);
+        //console.log(Object.keys(result))
+        //console.log(result["id"]);
+        //console.log(result['id']);
+        //console.log(result.$id);
+        //$.each(result, (key, value) => {
+            //console.log(value);
+            for (let i = 0; i < values.length; i++) {
+                var v = values[i];
+                tr += `<tr>
+            <td>${v.flowerBouquetName}</td>
+            <td>${v.description}</td>
+            <td>${v.unitPrice}</td>
+            <td>${v.unitsInStock}</td>
+            <td>${v.flowerBouquetStatus}</td>
             
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.FlowerBouquetId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.FlowerBouquetId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.FlowerBouquetId">Delete</a>
+                <a href="/Admin/FlowerBouquetCRUD/Edit?flowerBouquetId=${v.flowerBouquetId}">Edit</a> |
+                <a href="/Admin/FlowerBouquetCRUD/Details?flowerBouquetId=${v.flowerBouquetId}">Details</a> |
+                <a href="/Admin/FlowerBouquetCRUD/Delete?flowerBouquetId=${v.flowerBouquetId}">Delete</a>
             </td>
         </tr>`
-        })
-        $("#flowerTable").html(tr);
+            }
+        //});
+        $('#flowerTable').html(tr);
+    }
+
+    function LoadCustomers() {
+        $.ajax({
+            method: 'GET',
+            url: '/Admin/CustomerCRUD/Index',
+            success: function (result) {
+                DrawCustomerTable(result);
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        });
+    }
+
+    function DrawCustomerTable(result) {
+        var values = result.$values;
+        console.log(values);
+        var tr = '';
+        for (let i = 0; i < values.length; i++) {
+            var v = values[i];
+            tr += `<tr>
+            <td>${v.email} </td>
+            <td>${v.customerName}</td>
+            <td>${v.city}</td>
+            <td>${v.country}</td>
+            <td>${v.password}</td>
+            <td>${v.birthday}</td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.CustomerId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.CustomerId">Delete</a>
+            </td>
+        </tr>`
+        }
+        $('#tableCustomer').html(tr);
     }
 })

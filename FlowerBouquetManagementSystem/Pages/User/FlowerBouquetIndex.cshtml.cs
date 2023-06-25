@@ -20,6 +20,11 @@ namespace FlowerBouquetManagementSystem.Pages.User
         public IList<FlowerBouquet> FlowerBouquets { get;set; }
         public FlowerBouquet FlowerBouquet { get; set; }
 
+        //public async void OnGetAsync()
+        //{
+        //    FlowerBouquets = await _flowerBouquetRepository.GetFlowerBouquetsWithCategoryAndSupplier();
+        //}
+
         public void OnGet()
         {
             FlowerBouquets = _flowerBouquetRepository.GetFlowerBouquetsWithCategoryAndSupplier();
