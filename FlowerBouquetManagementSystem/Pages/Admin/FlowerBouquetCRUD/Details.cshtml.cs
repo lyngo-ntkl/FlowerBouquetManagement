@@ -6,6 +6,8 @@ using Repositories;
 using Repositories.Implement;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using FlowerBouquetManagementSystem.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
 {
@@ -13,14 +15,16 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
     public class DetailsModel : PageModel
     {
         private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
+        private readonly IHubContext<FlowerHub> _flowerHub;
 
-        public DetailsModel()
+        public DetailsModel(IHubContext<FlowerHub> hubContext)
         {
+            _flowerHub = hubContext;
         }
 
         public FlowerBouquet FlowerBouquet { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGet(int? id)
         {
             if (id == null)
             {
@@ -28,7 +32,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
                 return Page();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id == null ? 0 : id.Value);
+            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
 
             if (FlowerBouquet == null)
             {

@@ -1,3 +1,4 @@
+using FlowerBouquetManagementSystem.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Text.Json.Serialization;
 
 namespace FlowerBouquetManagementSystem
 {
@@ -25,7 +27,13 @@ namespace FlowerBouquetManagementSystem
             //{
             //    options.Conventions.AuthorizeFolder("/Admin");
             //}
-            );
+            ).AddJsonOptions(options => {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            }).AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AddPageRoute("/Shared/Index", "");
+            })
+            ;
             services
                 //.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 //.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options));
@@ -54,7 +62,7 @@ namespace FlowerBouquetManagementSystem
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
-            //services.AddDbContext<FUFlowerBouquetManagementContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FlowerBouquetStoreDB")));
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,6 +93,7 @@ namespace FlowerBouquetManagementSystem
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapHub<FlowerHub>("/flowerHub");
             });
         }
     }

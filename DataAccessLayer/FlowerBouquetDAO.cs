@@ -148,7 +148,7 @@ namespace DataAccessLayer
             {
                 using (var context = new FUFlowerBouquetManagementContext())
                 {
-                    flowerBouquet = context.FlowerBouquets.OrderByDescending(f => f.FlowerBouquetId).Max();
+                    flowerBouquet = context.FlowerBouquets.OrderByDescending(f => f.FlowerBouquetId).FirstOrDefault();
                 }
             }
             catch (Exception e)

@@ -15,7 +15,7 @@ namespace BusinessObjects.Models
             Orders = new HashSet<Order>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CustomerId { get; set; }
         [Required(ErrorMessage = "Email is required")]
         [MaxLength(100, ErrorMessage = "Maximum characters is 100")]

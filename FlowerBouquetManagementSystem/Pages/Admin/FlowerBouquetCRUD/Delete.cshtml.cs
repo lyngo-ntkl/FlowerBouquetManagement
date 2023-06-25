@@ -5,6 +5,8 @@ using Repositories.Implement;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using FlowerBouquetManagementSystem.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
 {
@@ -12,9 +14,11 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
     public class DeleteModel : PageModel
     {
         private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
+        private readonly IHubContext<FlowerHub> _flowerHub;
 
-        public DeleteModel()
+        public DeleteModel(IHubContext<FlowerHub> hubContext)
         {
+            this._flowerHub = hubContext;
         }
 
         [BindProperty]
@@ -28,7 +32,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
                 return Page();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id == null ? 0 : id.Value);
+            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
 
             if (FlowerBouquet == null)
             {
@@ -42,19 +46,18 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         {
             if (id == null)
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return NotFound();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetById(id == null ? 0 : id.Value);
+            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetById(id.Value);
+            _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
 
             if (FlowerBouquet != null)
             {
                 _flowerBouquetRepository.DeleteFlowerBouquet(FlowerBouquet);
             } else
             {
-                ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return NotFound();
             }
 
             return RedirectToPage("./Index");

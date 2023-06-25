@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
-namespace FlowerBouquetManagementSystem.Pages.User
+namespace FlowerBouquetManagementSystem.Pages.Utils
 {
     public static class SessionHelper
     {
@@ -13,7 +13,7 @@ namespace FlowerBouquetManagementSystem.Pages.User
         public static T GetObjectFromJson<T>(this ISession session, string key)
         {
             var value = session.GetString(key);
-            return value == null ? default(T) : JsonSerializer.Deserialize<T>(value);
+            return value == null ? default : JsonSerializer.Deserialize<T>(value);
         }
     }
 }

@@ -5,7 +5,8 @@ using BusinessObjects.Models;
 using Repositories;
 using Repositories.Implement;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using FlowerBouquetManagementSystem.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
 {
@@ -15,9 +16,11 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
         private readonly CategoryRepository _categoryRepository = new CategoryRepositoryImpl();
         private readonly SupplierRepository _supplierRepository = new SupplierRepositoryImpl();
+        private readonly IHubContext<FlowerHub> _flowerHub;
 
-        public CreateModel()
+        public CreateModel(IHubContext<FlowerHub> hubContext)
         {
+            _flowerHub = hubContext;
         }
 
         public IActionResult OnGet()
@@ -35,10 +38,11 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return RedirectToPage("./Create");
             }
 
             _flowerBouquetRepository.SaveFlowerBouquet(FlowerBouquet);
+            _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
 
             return RedirectToPage("./Index");
         }

@@ -1,5 +1,5 @@
 ﻿@page
-@model FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD.IndexModel
+@model FlowerBouquetManagementSystem.Pages.Shared.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +10,24 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
 <table class="table">
+    <thead>
+        <tr>
+            <th>Flower bouquet name</th>
+            <th>Description</th>
+            <th>Unit price</th>
+            <th>Units in stock</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="flowerTable">
+    </tbody>
+</table>
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -69,4 +86,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table>*@

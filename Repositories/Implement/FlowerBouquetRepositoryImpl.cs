@@ -16,9 +16,14 @@ namespace Repositories.Implement
         public List<FlowerBouquet> GetFlowerBouquets() => FlowerBouquetDAO.GetFlowerBouquets();
         public List<FlowerBouquet> GetFlowerBouquetsWithCategoryAndSupplier() => FlowerBouquetDAO.GetFlowerBouquetsWithCategoryAndSupplier();
 
-        public FlowerBouquet GetFlowerBouquetWithTheLargestId() => FlowerBouquetDAO.GetFlowerBouquetWithTheLargestId();
-
-        public void SaveFlowerBouquet(FlowerBouquet flowerBouquet) => FlowerBouquetDAO.SaveFlowerBouquet(flowerBouquet);
+        public void SaveFlowerBouquet(FlowerBouquet flowerBouquet)
+        {
+            if(flowerBouquet.FlowerBouquetId == 0)
+            {
+                flowerBouquet.FlowerBouquetId = FlowerBouquetDAO.GetFlowerBouquetWithTheLargestId().FlowerBouquetId + 1;
+            }
+            FlowerBouquetDAO.SaveFlowerBouquet(flowerBouquet);
+        }
 
         public void UpdateFlowerBouquet(FlowerBouquet flowerBouquet) => FlowerBouquetDAO.UpdateFlowerBouquet(flowerBouquet);
     }

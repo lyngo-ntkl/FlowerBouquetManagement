@@ -13,6 +13,5 @@ namespace Repositories
         void SaveFlowerBouquet(FlowerBouquet flowerBouquet);
         void UpdateFlowerBouquet(FlowerBouquet flowerBouquet);
         void DeleteFlowerBouquet(FlowerBouquet flowerBouquet);
-        FlowerBouquet GetFlowerBouquetWithTheLargestId();
     }
 }

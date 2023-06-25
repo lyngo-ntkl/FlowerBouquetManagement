@@ -6,6 +6,8 @@ using Repositories.Implement;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using FlowerBouquetManagementSystem.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
 {
@@ -15,9 +17,11 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
         private readonly CategoryRepository _categoryRepository = new CategoryRepositoryImpl();
         private readonly SupplierRepository _supplierRepository = new SupplierRepositoryImpl();
+        private readonly IHubContext<FlowerHub> _flowerHub;
 
-        public EditModel()
+        public EditModel(IHubContext<FlowerHub> hubContext)
         {
+            this._flowerHub = hubContext;
         }
 
         [BindProperty]
@@ -28,15 +32,15 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
             if (id == null)
             {
                 ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return RedirectToPage("./Edit");
             }
             
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id == null ? 0 : id.Value);
+            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
 
             if (FlowerBouquet == null)
             {
                 ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return RedirectToPage("./Edit");
             }
             ViewData["CategoryId"] = new SelectList(_categoryRepository.GetCategories(), "CategoryId", "CategoryName");
             ViewData["SupplierId"] = new SelectList(_supplierRepository.GetSuppliers(), "SupplierId", "SupplierName");
@@ -49,16 +53,17 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return RedirectToPage("./Edit");
             }
 
             if(_flowerBouquetRepository.FindFlowerBouquetById(FlowerBouquet.FlowerBouquetId) == null)
             {
                 ModelState.AddModelError("NotFound", "Flower bouquet not found");
-                return Page();
+                return RedirectToPage("./Edit");
             }
 
             _flowerBouquetRepository.UpdateFlowerBouquet(FlowerBouquet);
+            _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
 
             return RedirectToPage("./Index");
         }
