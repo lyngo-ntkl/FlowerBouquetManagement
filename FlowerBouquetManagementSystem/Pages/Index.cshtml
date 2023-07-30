@@ -1,0 +1,29 @@
+﻿@page
+@model FlowerBouquetManagementSystem.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Admin/FlowerBouquetCRUD/Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Flower bouquet name</th>
+            <th>Description</th>
+            <th>Unit price</th>
+            <th>Units in stock</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="flowerTable">
+    </tbody>
+</table>

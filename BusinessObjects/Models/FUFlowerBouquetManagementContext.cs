@@ -26,15 +26,31 @@ namespace BusinessObjects.Models
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
 
+// <<<<<<< HEAD
+// =======
+        public static IConfiguration GetConfiguration()
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .Build();
+            return configuration;
+        }
+
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                IConfiguration configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .Build();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("FlowerBouquetStoreDB"));
+// <<<<<<< HEAD
+//                 IConfiguration configuration = new ConfigurationBuilder()
+//                     .SetBasePath(Directory.GetCurrentDirectory())
+//                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+//                     .Build();
+//                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("FlowerBouquetStoreDB"));
+// =======
+                optionsBuilder.UseSqlServer(GetConfiguration().GetConnectionString("FlowerBouquetStoreDB"));
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
             }
         }
 
@@ -64,6 +80,10 @@ namespace BusinessObjects.Models
 
                 entity.Property(e => e.CustomerId)
                     .ValueGeneratedNever()
+// <<<<<<< HEAD
+// =======
+                    //.ValueGeneratedOnAdd()
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
                     .HasColumnName("CustomerID");
 
                 entity.Property(e => e.Birthday).HasColumnType("date");
@@ -100,6 +120,10 @@ namespace BusinessObjects.Models
 
                 entity.Property(e => e.FlowerBouquetId)
                     .ValueGeneratedNever()
+// <<<<<<< HEAD
+// =======
+                    //.ValueGeneratedOnAdd()
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
                     .HasColumnName("FlowerBouquetID");
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -136,11 +160,21 @@ namespace BusinessObjects.Models
 
                 entity.Property(e => e.OrderId)
                     .ValueGeneratedNever()
+// <<<<<<< HEAD
+// =======
+                    //.ValueGeneratedOnAdd()
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
                     .HasColumnName("OrderID");
 
                 entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
 
-                entity.Property(e => e.OrderDate).HasColumnType("datetime");
+// <<<<<<< HEAD
+                // entity.Property(e => e.OrderDate).HasColumnType("datetime");
+// =======
+                entity.Property(e => e.OrderDate)
+                .HasDefaultValue(DateTime.Now)
+                .HasColumnType("datetime");
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
 
                 entity.Property(e => e.OrderStatus)
                     .HasMaxLength(10)

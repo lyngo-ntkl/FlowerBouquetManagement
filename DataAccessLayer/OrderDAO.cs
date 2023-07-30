@@ -1,4 +1,8 @@
 ﻿using BusinessObjects.Models;
+<<<<<<< HEAD
+=======
+using Microsoft.EntityFrameworkCore;
+>>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +43,45 @@ namespace DataAccessLayer
             }
             return order;
         }
+<<<<<<< HEAD
+=======
+        public static Order FindOrderByIdIncludeOrderDetails(int orderId)
+        {
+            Order order = new Order();
+            try
+            {
+                using (var context = new FUFlowerBouquetManagementContext())
+                {
+                    order = context.Orders
+                        .Include(o => o.OrderDetails)
+                        .SingleOrDefault(o => o.OrderId == orderId);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return order;
+        }
+        public static Order FindOrderByIdIncludeCustomer(int orderId)
+        {
+            Order order = new Order();
+            try
+            {
+                using (var context = new FUFlowerBouquetManagementContext())
+                {
+                    order = context.Orders
+                        .Include(o => o.Customer)
+                        .SingleOrDefault(o => o.OrderId == orderId);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return order;
+        }
+>>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
         public static List<Order> FindOrderByCustomerId(int customerId)
         {
             List <Order> orders = new List<Order>();

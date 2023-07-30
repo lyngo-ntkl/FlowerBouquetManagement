@@ -1,0 +1,77 @@
+﻿@page
+@model FlowerBouquetManagementSystem.Pages.User.CheckoutModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <div class="row">
+        @Model.Customer.CustomerName | @Model.Customer.Email <br/>
+        @Model.Customer.City, @Model.Customer.Country
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Sub Total</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cart)
+            {
+                <form method="post">
+                <tr>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.FlowerBouquet.FlowerBouquetName)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.FlowerBouquet.UnitPrice)
+                    </td>
+                    <td>
+                        <input type="number" name="quantity" value="@item.Quantity" min="1" />
+                    </td>
+                    <td>
+                            @(item.FlowerBouquet.UnitPrice * item.Quantity)
+                    </td>
+                    <td>
+                        <input type="submit" asp-page-handler="update" asp-page="cart" asp-route-id="@item.FlowerBouquet.FlowerBouquetId" value="Update" class="btn btn-link" />
+                    </td>
+                    <td>
+                        <a asp-page="Cart" asp-page-handler="delete" asp-route-id="@item.FlowerBouquet.FlowerBouquetId">Remove</a>
+                    </td>
+                </tr>
+                </form>
+            }
+            <tr>
+                <td colspan="3">Total</td>
+                <td>@Model.Total</td>
+            </tr>
+            <tr>
+                <td>Payment method</td>
+                <td>
+                    <select>
+                        <option selected>Cash</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" class="mr-2">
+                    <a asp-page="Checkout" asp-page-handler="checkout" asp-route-cart="@Model.Cart">Checkout</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-page="./FlowerBouquetIndex">Buy more</a> |
+    <a asp-page="./Cart">Back to Cart</a>
+</div>
