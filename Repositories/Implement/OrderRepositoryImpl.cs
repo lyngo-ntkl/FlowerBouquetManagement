@@ -6,14 +6,14 @@ namespace Repositories.Implement
 {
     public class OrderRepositoryImpl : OrderRepository
     {
-        public void DeleteOrder(Order order) => OrderDAO.DeleteOrder(order);
+        public void Delete(Order order) => OrderDAO.Delete(order);
 
-        public Order FindOrderById(int id) => OrderDAO.FindOrderById(id);
+        public Order Get(int id) => OrderDAO.Get(id);
 
-        public List<Order> GetOrders() => OrderDAO.GetOrders();
+        public List<Order> GetAll() => OrderDAO.GetAll();
 
-        public void SaveOrder(Order order) => OrderDAO.SaveOrder(order);
+        public void Save(Order order) => OrderDAO.Save(order);
 
-        public void UpdateOrder(Order order) => OrderDAO.UpdateOrder(order);
+        public void Update(Order order) => OrderDAO.Update(order);
     }
 }

@@ -5,10 +5,10 @@ namespace Repositories
 {
     public interface OrderRepository
     {
-        List<Order> GetOrders();
-        Order FindOrderById(int id);
-        void SaveOrder(Order order);
-        void UpdateOrder(Order order);
-        void DeleteOrder(Order order);
+        List<Order> GetAll();
+        Order Get(int id);
+        void Save(Order order);
+        void Update(Order order);
+        void Delete(Order order);
     }
 }

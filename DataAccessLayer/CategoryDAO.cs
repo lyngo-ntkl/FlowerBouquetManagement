@@ -7,7 +7,24 @@ namespace DataAccessLayer
 {
     public class CategoryDAO
     {
-        public static List<Category> GetCategories()
+        private static CategoryDAO instance;
+        private static readonly object instanceLock = new object();
+        private CategoryDAO() { }
+        public static CategoryDAO Instance
+        {
+            get
+            {
+                lock (instanceLock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new CategoryDAO();
+                    }
+                    return instance;
+                }
+            }
+        }
+        public static List<Category> GetAll()
         {
             List<Category> categories = new List<Category>();
             try
@@ -23,7 +40,7 @@ namespace DataAccessLayer
             }
             return categories;
         }
-        public static Category FindCategoryById(int id)
+        public static Category Get(int id)
         {
             Category category = new Category();
             try
@@ -39,7 +56,7 @@ namespace DataAccessLayer
             }
             return category;
         }
-        public static void SaveCategory(Category category)
+        public static void Save(Category category)
         {
             try
             {
@@ -54,7 +71,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateCategory(Category category)
+        public static void Update(Category category)
         {
             try
             {
@@ -69,7 +86,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void DeleteCategory(Category category)
+        public static void Delete(Category category)
         {
             try
             {

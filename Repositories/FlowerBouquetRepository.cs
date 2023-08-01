@@ -5,12 +5,10 @@ namespace Repositories
 {
     public interface FlowerBouquetRepository
     {
-        List<FlowerBouquet> GetFlowerBouquets();
-        FlowerBouquet FindFlowerBouquetById(int id);
-        List<FlowerBouquet> FindFlowerBouquetContainName(string name);
-        void SaveFlowerBouquet(FlowerBouquet flowerBouquet);
-        void UpdateFlowerBouquet(FlowerBouquet flowerBouquet);
-        void DeleteFlowerBouquet(FlowerBouquet flowerBouquet);
-        FlowerBouquet GetFlowerBouquetWithTheLargestId();
+        List<FlowerBouquet> GetAll();
+        FlowerBouquet Get(int id);
+        void Save(FlowerBouquet flowerBouquet);
+        void Update(FlowerBouquet flowerBouquet);
+        void Delete(FlowerBouquet flowerBouquet);
     }
 }

@@ -7,7 +7,24 @@ namespace DataAccessLayer
 {
     public class SupplierDAO
     {
-        public static List<Supplier> GetSuppliers()
+        private static SupplierDAO instance;
+        private static readonly object instanceLock = new object();
+        private SupplierDAO() { }
+        public static SupplierDAO Instance
+        {
+            get
+            {
+                lock (instanceLock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new SupplierDAO();
+                    }
+                    return instance;
+                }
+            }
+        }
+        public static List<Supplier> GetAll()
         {
             List<Supplier> suppliers = new List<Supplier>();
             try
@@ -24,7 +41,7 @@ namespace DataAccessLayer
             return suppliers;
         }
 
-        public static Supplier FindSupplierById(int supplierId) { 
+        public static Supplier Get(int supplierId) { 
             Supplier supplier = new Supplier();
             try
             {
@@ -40,7 +57,7 @@ namespace DataAccessLayer
             return supplier;
         }
 
-        public static void SaveSupplier(Supplier supplier)
+        public static void Save(Supplier supplier)
         {
             try
             {
@@ -55,7 +72,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateSupplier(Supplier supplier)
+        public static void Update(Supplier supplier)
         {
             try
             {
@@ -70,7 +87,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void DeleteSupplier(Supplier supplier)
+        public static void Delete(Supplier supplier)
         {
             try
             {

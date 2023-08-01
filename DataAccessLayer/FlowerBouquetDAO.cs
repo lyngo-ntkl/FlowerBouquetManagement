@@ -1,4 +1,5 @@
 ﻿using BusinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,34 @@ namespace DataAccessLayer
 {
     public class FlowerBouquetDAO
     {
-        public static FlowerBouquet FindFlowerBouquetsById(int id)
+        private static FlowerBouquetDAO instance;
+        private static readonly object instanceLock = new object();
+        private FlowerBouquetDAO() { }
+        public static FlowerBouquetDAO Instance
+        {
+            get
+            {
+                lock (instanceLock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new FlowerBouquetDAO();
+                    }
+                    return instance;
+                }
+            }
+        }
+        public static FlowerBouquet Get(int id)
         {
             FlowerBouquet flowerBouquet = new FlowerBouquet();
             try
             {
                 using (var context = new FUFlowerBouquetManagementContext())
                 {
-                    flowerBouquet = context.FlowerBouquets.SingleOrDefault(flower => flower.FlowerBouquetId == id);
+                    flowerBouquet = context.FlowerBouquets
+                        .Include(x => x.Category)
+                        .Include(x => x.Supplier)
+                        .SingleOrDefault(flower => flower.FlowerBouquetId == id);
                 }
             }
             catch (Exception e)
@@ -24,14 +45,17 @@ namespace DataAccessLayer
             }
             return flowerBouquet;
         }
-        public static List<FlowerBouquet> GetFlowerBouquets()
+        public static List<FlowerBouquet> GetAll()
         {
             List<FlowerBouquet> flowerBouquets = new List<FlowerBouquet>();
             try
             {
                 using (var context = new FUFlowerBouquetManagementContext())
                 {
-                    flowerBouquets = context.FlowerBouquets.ToList();
+                    flowerBouquets = context.FlowerBouquets
+                        .Include(x => x.Category)
+                        .Include(x => x.Supplier)
+                        .ToList();
                 }
             }
             catch (Exception e)
@@ -40,7 +64,7 @@ namespace DataAccessLayer
             }
             return flowerBouquets;
         }
-        public static void SaveFlowerBouquet(FlowerBouquet flowerBouquet) 
+        public static void Save(FlowerBouquet flowerBouquet) 
         {
             try
             {
@@ -55,7 +79,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateFlowerBouquet(FlowerBouquet flowerBouquet)
+        public static void Update(FlowerBouquet flowerBouquet)
         {
             try
             {
@@ -70,7 +94,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void DeleteFlowerBouquet(FlowerBouquet flowerBouquet)
+        public static void Delete(FlowerBouquet flowerBouquet)
         {
             try
             {
@@ -84,38 +108,6 @@ namespace DataAccessLayer
             {
                 throw new Exception(e.Message);
             }
-        }
-        public static List<FlowerBouquet> FindFlowerBouquetContainName(string name)
-        {
-            List<FlowerBouquet> flowerBouquets = new List<FlowerBouquet>();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    flowerBouquets = context.FlowerBouquets.Where(flowerBouquet => flowerBouquet.FlowerBouquetName.Contains(name)).ToList();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return flowerBouquets;
-        }
-        public static FlowerBouquet GetFlowerBouquetWithTheLargestId()
-        {
-            FlowerBouquet flowerBouquet = new FlowerBouquet();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    flowerBouquet = context.FlowerBouquets.OrderByDescending(f => f.FlowerBouquetId).Max();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return flowerBouquet;
         }
     }
 }

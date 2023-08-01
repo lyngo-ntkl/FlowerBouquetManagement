@@ -6,18 +6,14 @@ namespace Repositories.Implement
 {
     public class FlowerBouquetRepositoryImpl : FlowerBouquetRepository
     {
-        public void DeleteFlowerBouquet(FlowerBouquet flowerBouquet) => FlowerBouquetDAO.DeleteFlowerBouquet(flowerBouquet);
+        public void Delete(FlowerBouquet flowerBouquet) => FlowerBouquetDAO.Delete(flowerBouquet);
 
-        public FlowerBouquet FindFlowerBouquetById(int id) => FlowerBouquetDAO.FindFlowerBouquetsById(id);
+        public FlowerBouquet Get(int id) => FlowerBouquetDAO.Get(id);
 
-        public List<FlowerBouquet> FindFlowerBouquetContainName(string name) => FlowerBouquetDAO.FindFlowerBouquetContainName(name);
+        public List<FlowerBouquet> GetAll() => FlowerBouquetDAO.GetAll();
 
-        public List<FlowerBouquet> GetFlowerBouquets() => FlowerBouquetDAO.GetFlowerBouquets();
+        public void Save(FlowerBouquet flowerBouquet) => FlowerBouquetDAO.Save(flowerBouquet);
 
-        public FlowerBouquet GetFlowerBouquetWithTheLargestId() => FlowerBouquetDAO.GetFlowerBouquetWithTheLargestId();
-
-        public void SaveFlowerBouquet(FlowerBouquet flowerBouquet) => FlowerBouquetDAO.SaveFlowerBouquet(flowerBouquet);
-
-        public void UpdateFlowerBouquet(FlowerBouquet flowerBouquet) => FlowerBouquetDAO.UpdateFlowerBouquet(flowerBouquet);
+        public void Update(FlowerBouquet flowerBouquet) => FlowerBouquetDAO.Update(flowerBouquet);
     }
 }
