@@ -98,7 +98,6 @@ namespace FlowerBouquetManagementSystem
             {
                 endpoints.MapRazorPages();
                 endpoints.MapHub<FlowerHub>("/flowerHub");
-                endpoints.MapHub<CustomerHub>("/customerHub");
             });
         }
     }

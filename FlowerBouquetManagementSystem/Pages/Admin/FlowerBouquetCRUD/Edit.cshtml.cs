@@ -27,14 +27,14 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
         [BindProperty]
         public FlowerBouquet FlowerBouquet { get; set; }
 
-        public IActionResult OnGet(int? flowerBouquetId)
+        public IActionResult OnGet(int? id)
         {
-            if (flowerBouquetId == null)
+            if (id == null)
             {
                 return NotFound();
             }
             
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(flowerBouquetId.Value);
+            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
 
             if (FlowerBouquet == null)
             {
@@ -62,7 +62,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
             _flowerBouquetRepository.UpdateFlowerBouquet(FlowerBouquet);
             _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("./Index");
         }
     }
 }

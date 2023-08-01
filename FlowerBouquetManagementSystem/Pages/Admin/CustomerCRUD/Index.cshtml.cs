@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using Microsoft.AspNetCore.SignalR;
 using FlowerBouquetManagementSystem.SignalR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
@@ -15,19 +14,18 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
     public class IndexModel : PageModel
     {
         private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
-        private readonly IHubContext<CustomerHub> _hubContext;
+        private readonly IHubContext<FlowerHub> _hubContext;
 
-        public IndexModel(IHubContext<CustomerHub> hubContext)
+        public IndexModel(IHubContext<FlowerHub> hubContext)
         {
             this._hubContext = hubContext;
         }
 
         public IList<Customer> Customer { get;set; }
 
-        public IActionResult OnGetCustomers()
+        public void OnGet()
         {
             Customer = _customerRepository.GetCustomers();
-            return new JsonResult(Customer);
         }
     }
 }

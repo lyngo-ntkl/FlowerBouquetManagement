@@ -40,14 +40,14 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
             return Page();
         }
 
-        public IActionResult OnPost(int? flowerBouquetId)
+        public IActionResult OnPost(int? id)
         {
-            if (flowerBouquetId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetById(flowerBouquetId.Value);
+            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetById(id.Value);
 
             if (FlowerBouquet != null)
             {
@@ -58,7 +58,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
                 return NotFound();
             }
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("./Index");
         }
     }
 }

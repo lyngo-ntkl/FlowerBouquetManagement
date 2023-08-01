@@ -5,8 +5,6 @@ using Repositories.Implement;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
-using FlowerBouquetManagementSystem.SignalR;
-using Microsoft.AspNetCore.SignalR;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
@@ -14,28 +12,28 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
     public class EditModel : PageModel
     {
         private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
-        private readonly IHubContext<CustomerHub> _hubContext;
 
-        public EditModel(IHubContext<CustomerHub> hubContext)
+        public EditModel()
         {
-            _hubContext = hubContext;
         }
 
         [BindProperty]
         public Customer Customer { get; set; }
 
-        public IActionResult OnGet(int? customerId)
+        public IActionResult OnGet(int? id)
         {
-            if (customerId == null)
+            if (id == null)
             {
-                return NotFound();
+                ModelState.AddModelError("NotFound", "Customer not found");
+                return Page();
             }
 
-            Customer = _customerRepository.FindCustomerById(customerId.Value);
+            Customer = _customerRepository.FindCustomerById(id.Value);
 
             if (Customer == null)
             {
-                return NotFound();
+                ModelState.AddModelError("NotFound", "Customer not found");
+                return Page();
             }
             return Page();
         }
@@ -56,7 +54,6 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
             }
 
             _customerRepository.UpdateCustomer(Customer);
-            _hubContext.Clients.All.SendAsync("LoadCustomer");
 
             return RedirectToPage("./Index");
         }

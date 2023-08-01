@@ -5,8 +5,6 @@ using Repositories.Implement;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
-using FlowerBouquetManagementSystem.SignalR;
-using Microsoft.AspNetCore.SignalR;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
@@ -14,48 +12,49 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
     public class DeleteModel : PageModel
     {
         private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
-        private readonly IHubContext<CustomerHub> _hubContext;
 
-        public DeleteModel(IHubContext<CustomerHub> hubContext)
+        public DeleteModel()
         {
-            _hubContext = hubContext;
         }
 
         [BindProperty]
         public Customer Customer { get; set; }
 
-        public IActionResult OnGetAsync(int? customerId)
+        public IActionResult OnGetAsync(int? id)
         {
-            if (customerId == null)
+            if (id == null)
             {
-                return NotFound();
+                ModelState.AddModelError("NotFound", "Customer not found");
+                return Page();
             }
 
-            Customer = _customerRepository.FindCustomerById(customerId.Value);
+            Customer = _customerRepository.FindCustomerById(id.Value);
 
             if (Customer == null)
             {
-                return NotFound();
+                ModelState.AddModelError("NotFound", "Customer not found");
+                return Page();
             }
             return Page();
         }
 
-        public IActionResult OnPost(int? customerId)
+        public IActionResult OnPost(int? id)
         {
-            if (customerId == null)
+            if (id == null)
             {
-                return NotFound();
+                ModelState.AddModelError("NotFound", "Customer not found");
+                return Page();
             }
 
-            Customer = _customerRepository.FindCustomerById(customerId.Value);
+            Customer = _customerRepository.FindCustomerById(id.Value);
 
             if (Customer == null)
             {
-                return NotFound();
+                ModelState.AddModelError("NotFound", "Customer not found");
+                return Page();
             }
 
             _customerRepository.DeleteCustomer(Customer);
-            _hubContext.Clients.All.SendAsync("LoadCustomer");
 
             return RedirectToPage("./Index");
         }
