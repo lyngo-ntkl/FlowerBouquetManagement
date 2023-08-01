@@ -10,23 +10,24 @@ namespace DataAccessLayer
 {
     public class FlowerBouquetDAO
     {
-        public static FlowerBouquet FindFlowerBouquetsById(int id)
+        private static FlowerBouquetDAO instance;
+        private static readonly object instanceLock = new object();
+        private FlowerBouquetDAO() { }
+        public static FlowerBouquetDAO Instance
         {
-            FlowerBouquet flowerBouquet = new FlowerBouquet();
-            try
+            get
             {
-                using (var context = new FUFlowerBouquetManagementContext())
+                lock (instanceLock)
                 {
-                    flowerBouquet = context.FlowerBouquets.SingleOrDefault(flower => flower.FlowerBouquetId == id);
+                    if (instance == null)
+                    {
+                        instance = new FlowerBouquetDAO();
+                    }
+                    return instance;
                 }
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return flowerBouquet;
         }
-        public static FlowerBouquet FindFlowerBouquetsByIdWithCategoryAndSupplierAsync(int id)
+        public static FlowerBouquet Get(int id)
         {
             FlowerBouquet flowerBouquet = new FlowerBouquet();
             try
@@ -34,8 +35,8 @@ namespace DataAccessLayer
                 using (var context = new FUFlowerBouquetManagementContext())
                 {
                     flowerBouquet = context.FlowerBouquets
-                        .Include(f => f.Supplier)
-                        .Include(f => f.Category)
+                        .Include(x => x.Category)
+                        .Include(x => x.Supplier)
                         .SingleOrDefault(flower => flower.FlowerBouquetId == id);
                 }
             }
@@ -45,24 +46,7 @@ namespace DataAccessLayer
             }
             return flowerBouquet;
         }
-        public static List<FlowerBouquet> GetFlowerBouquets()
-        {
-            List<FlowerBouquet> flowerBouquets = new List<FlowerBouquet>();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    flowerBouquets = context.FlowerBouquets.ToList();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return flowerBouquets;
-        }
-
-        public static List<FlowerBouquet> GetFlowerBouquetsWithCategoryAndSupplier()
+        public static List<FlowerBouquet> GetAll()
         {
             List<FlowerBouquet> flowerBouquets = new List<FlowerBouquet>();
             try
@@ -70,8 +54,8 @@ namespace DataAccessLayer
                 using (var context = new FUFlowerBouquetManagementContext())
                 {
                     flowerBouquets = context.FlowerBouquets
-                        .Include(flowerBouquets => flowerBouquets.Category)
-                        .Include(flowerBouquets => flowerBouquets.Supplier)
+                        .Include(x => x.Category)
+                        .Include(x => x.Supplier)
                         .ToList();
                 }
             }
@@ -81,26 +65,7 @@ namespace DataAccessLayer
             }
             return flowerBouquets;
         }
-        //public static async Task<List<FlowerBouquet>> GetFlowerBouquetsWithCategoryAndSupplier()
-        //{
-        //    List<FlowerBouquet> flowerBouquets = new List<FlowerBouquet>();
-        //    try
-        //    {
-        //        using (var context = new FUFlowerBouquetManagementContext())
-        //        {
-        //            flowerBouquets = await context.FlowerBouquets
-        //                .Include(flowerBouquets => flowerBouquets.Category)
-        //                .Include(flowerBouquets => flowerBouquets.Supplier)
-        //                .ToListAsync();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception(e.Message);
-        //    }
-        //    return flowerBouquets;
-        //}
-        public static void SaveFlowerBouquet(FlowerBouquet flowerBouquet) 
+        public static void Save(FlowerBouquet flowerBouquet) 
         {
             try
             {
@@ -115,7 +80,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateFlowerBouquet(FlowerBouquet flowerBouquet)
+        public static void Update(FlowerBouquet flowerBouquet)
         {
             try
             {
@@ -130,7 +95,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void DeleteFlowerBouquet(FlowerBouquet flowerBouquet)
+        public static void Delete(FlowerBouquet flowerBouquet)
         {
             try
             {
@@ -144,38 +109,6 @@ namespace DataAccessLayer
             {
                 throw new Exception(e.Message);
             }
-        }
-        public static List<FlowerBouquet> FindFlowerBouquetContainName(string name)
-        {
-            List<FlowerBouquet> flowerBouquets = new List<FlowerBouquet>();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    flowerBouquets = context.FlowerBouquets.Where(flowerBouquet => flowerBouquet.FlowerBouquetName.Contains(name)).ToList();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return flowerBouquets;
-        }
-        public static FlowerBouquet GetFlowerBouquetWithTheLargestId()
-        {
-            FlowerBouquet flowerBouquet = new FlowerBouquet();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    flowerBouquet = context.FlowerBouquets.OrderByDescending(f => f.FlowerBouquetId).FirstOrDefault();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return flowerBouquet;
         }
     }
 }

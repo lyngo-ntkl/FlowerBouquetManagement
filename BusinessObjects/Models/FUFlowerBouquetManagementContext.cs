@@ -26,31 +26,20 @@ namespace BusinessObjects.Models
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
 
-// <<<<<<< HEAD
-// =======
-        public static IConfiguration GetConfiguration()
+        public IConfiguration GetConfiguration()
         {
             IConfiguration configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .Build();
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
             return configuration;
         }
 
-// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-// <<<<<<< HEAD
-//                 IConfiguration configuration = new ConfigurationBuilder()
-//                     .SetBasePath(Directory.GetCurrentDirectory())
-//                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-//                     .Build();
-//                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("FlowerBouquetStoreDB"));
-// =======
-                optionsBuilder.UseSqlServer(GetConfiguration().GetConnectionString("FlowerBouquetStoreDB"));
-// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
+                optionsBuilder.UseSqlServer(GetConfiguration()["ConnectionStrings:FlowerBouquetStoreDB"]);
             }
         }
 

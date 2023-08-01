@@ -5,11 +5,10 @@ namespace Repositories
 {
     public interface CategoryRepository
     {
-
-        List<Category> GetCategories();
-        Category FindCategoryById(int id);
-        void SaveCategory(Category category);
-        void UpdateCategory(Category category);
-        void DeleteCategory(Category category);
+        List<Category> GetAll();
+        Category Get(int id);
+        void Save(Category category);
+        void Update(Category category);
+        void Delete(Category category);
     }
 }

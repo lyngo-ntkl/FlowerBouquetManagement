@@ -6,14 +6,14 @@ namespace Repositories.Implement
 {
     public class CategoryRepositoryImpl : CategoryRepository
     {
-        public void DeleteCategory(Category category) => CategoryDAO.DeleteCategory(category);
+        public void Delete(Category category) => CategoryDAO.Delete(category);
 
-        public Category FindCategoryById(int id) => CategoryDAO.FindCategoryById(id);
+        public Category Get(int id) => CategoryDAO.Get(id);
 
-        public List<Category> GetCategories() => CategoryDAO.GetCategories();
+        public List<Category> GetAll() => CategoryDAO.GetAll();
 
-        public void SaveCategory(Category category) => CategoryDAO.SaveCategory(category);
+        public void Save(Category category) => CategoryDAO.Save(category);
 
-        public void UpdateCategory(Category category) => CategoryDAO.UpdateCategory(category);
+        public void Update(Category category) => CategoryDAO.Update(category);
     }
 }

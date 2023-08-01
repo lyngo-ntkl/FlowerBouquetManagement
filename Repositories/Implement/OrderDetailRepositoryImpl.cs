@@ -6,18 +6,14 @@ namespace Repositories.Implement
 {
     public class OrderDetailRepositoryImpl : OrderDetailRepository
     {
-        public void DeleteOrderDetail(OrderDetail orderDetail) => OrderDetailDAO.DeleteOrderDetail(orderDetail);
+        public void Delete(OrderDetail orderDetail) => OrderDetailDAO.Delete(orderDetail);
 
-        public List<OrderDetail> FindOrderDetailByFlowerBouquetId(int flowerBouquetId) => OrderDetailDAO.FindOrderDetailByFlowerBouquetId(flowerBouquetId);
+        public OrderDetail Get(int orderId, int flowerBouquetId) => OrderDetailDAO.Get(orderId, flowerBouquetId);
 
-        public List<OrderDetail> FindOrderDetailByOrderId(int orderId) => OrderDetailDAO.FindOrderDetailByOrderId(orderId);
+        public List<OrderDetail> GetAll() => OrderDetailDAO.GetAll();
 
-        public OrderDetail FindOrderDetailByOrderIdAndFlowerBouquetId(int orderId, int flowerBouquetId) => OrderDetailDAO.FindOrderDetailByOrderIdAndFlowerBouquetId(orderId, flowerBouquetId);
+        public void Save(OrderDetail orderDetail) => OrderDetailDAO.Save(orderDetail);
 
-        public List<OrderDetail> GetOrderDetails() => OrderDetailDAO.GetOrderDetails();
-
-        public void SaveOrderDetail(OrderDetail orderDetail) => OrderDetailDAO.SaveOrderDetail(orderDetail);
-
-        public void UpdateOrderDetail(OrderDetail orderDetail) => OrderDetailDAO.UpdateOrderDetail(orderDetail);
+        public void UpdateOrderDetail(OrderDetail orderDetail) => OrderDetailDAO.Update(orderDetail);
     }
 }

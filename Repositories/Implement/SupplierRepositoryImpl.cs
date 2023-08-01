@@ -6,14 +6,14 @@ namespace Repositories.Implement
 {
     public class SupplierRepositoryImpl : SupplierRepository
     {
-        public void DeleteSupplier(Supplier supplier) => SupplierDAO.DeleteSupplier(supplier);
+        public void Delete(Supplier supplier) => SupplierDAO.Delete(supplier);
 
-        public Supplier FindSupplierById(int id) => SupplierDAO.FindSupplierById(id);
+        public Supplier Get(int id) => SupplierDAO.Get(id);
 
-        public List<Supplier> GetSuppliers() => SupplierDAO.GetSuppliers();
+        public List<Supplier> GetAll() => SupplierDAO.GetAll();
 
-        public void SaveSupplier(Supplier supplier) => SupplierDAO.SaveSupplier(supplier);
+        public void Save(Supplier supplier) => SupplierDAO.Save(supplier);
 
-        public void UpdateSupplier(Supplier supplier) => SupplierDAO.UpdateSupplier(supplier);
+        public void Update(Supplier supplier) => SupplierDAO.Update(supplier);
     }
 }

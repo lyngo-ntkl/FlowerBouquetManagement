@@ -5,12 +5,10 @@ namespace Repositories
 {
     public interface OrderDetailRepository
     {
-        List<OrderDetail> GetOrderDetails();  
-        OrderDetail FindOrderDetailByOrderIdAndFlowerBouquetId(int orderId, int flowerBouquetId);
-        List<OrderDetail> FindOrderDetailByOrderId(int orderId);
-        List<OrderDetail> FindOrderDetailByFlowerBouquetId(int flowerBouquetId);
-        void SaveOrderDetail(OrderDetail orderDetail);
+        List<OrderDetail> GetAll();  
+        OrderDetail Get(int orderId, int flowerBouquetId);
+        void Save(OrderDetail orderDetail);
         void UpdateOrderDetail(OrderDetail orderDetail);
-        void DeleteOrderDetail(OrderDetail orderDetail);
+        void Delete(OrderDetail orderDetail);
     }
 }

@@ -14,6 +14,6 @@ namespace DTOs
         public double Discount { get; set; }
 
         public virtual FlowerBouquetDTO FlowerBouquet { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual OrderDTO Order { get; set; }
     }
 }

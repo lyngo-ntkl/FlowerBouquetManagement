@@ -1,8 +1,5 @@
 ﻿using BusinessObjects.Models;
-// <<<<<<< HEAD
-// =======
 using Microsoft.EntityFrameworkCore;
-// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +8,33 @@ namespace DataAccessLayer
 {
     public class OrderDAO
     {
-        public static List<Order> GetOrders()
+        private static OrderDAO instance;
+        private static readonly object instanceLock = new object();
+        private OrderDAO() { }
+        public static OrderDAO Instance
+        {
+            get
+            {
+                lock (instanceLock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new OrderDAO();
+                    }
+                    return instance;
+                }
+            }
+        }
+        public static List<Order> GetAll()
         {
             List<Order> orders = new List<Order>();
             try
             {
                 using (var context = new FUFlowerBouquetManagementContext())
                 {
-                    orders = context.Orders.ToList();
+                    orders = context.Orders
+                        .Include(x => x.Customer)
+                        .ToList();
                 }
             } catch (Exception e) 
             {
@@ -27,25 +43,7 @@ namespace DataAccessLayer
             return orders;
         }
 
-        public static Order FindOrderById(int orderId) 
-        {
-            Order order = new Order();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    order = context.Orders.SingleOrDefault(o => o.OrderId == orderId);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return order;
-        }
-// <<<<<<< HEAD
-// =======
-        public static Order FindOrderByIdIncludeOrderDetails(int orderId)
+        public static Order Get(int orderId) 
         {
             Order order = new Order();
             try
@@ -53,7 +51,8 @@ namespace DataAccessLayer
                 using (var context = new FUFlowerBouquetManagementContext())
                 {
                     order = context.Orders
-                        .Include(o => o.OrderDetails)
+                        .Include (x => x.Customer)
+                        .Include(x => x.OrderDetails)
                         .SingleOrDefault(o => o.OrderId == orderId);
                 }
             }
@@ -63,41 +62,7 @@ namespace DataAccessLayer
             }
             return order;
         }
-        public static Order FindOrderByIdIncludeCustomer(int orderId)
-        {
-            Order order = new Order();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    order = context.Orders
-                        .Include(o => o.Customer)
-                        .SingleOrDefault(o => o.OrderId == orderId);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return order;
-        }
-// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
-        public static List<Order> FindOrderByCustomerId(int customerId)
-        {
-            List <Order> orders = new List<Order>();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    orders = context.Orders.Where(order => order.CustomerId == customerId).ToList();
-                }
-            } catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return orders;
-        }
-        public static void SaveOrder(Order order) {
+        public static void Save(Order order) {
             try
             {
                 using (var context = new FUFlowerBouquetManagementContext())
@@ -110,7 +75,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateOrder(Order order) {
+        public static void Update(Order order) {
             try
             {
                 using (var context = new FUFlowerBouquetManagementContext())
@@ -124,7 +89,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void DeleteOrder(Order order) {
+        public static void Delete(Order order) {
             try
             {
                 using (var context = new FUFlowerBouquetManagementContext())
@@ -137,22 +102,6 @@ namespace DataAccessLayer
             {
                 throw new Exception(e.Message);
             }
-        }
-        public static Order GetOrderWithTheLargestOrderId()
-        {
-            Order order = new Order();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    order = context.Orders.OrderByDescending(o => o.OrderId).FirstOrDefault();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return order;
         }
     }
 }

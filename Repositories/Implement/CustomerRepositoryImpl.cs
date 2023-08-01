@@ -6,18 +6,14 @@ namespace Repositories.Implement
 {
     public class CustomerRepositoryImpl : CustomerRepository
     {
-        public void DeleteCustomer(Customer customer) => CustomerDAO.DeleteCustomer(customer);
+        public void Delete(Customer customer) => CustomerDAO.Delete(customer);
 
-        public Customer FindCustomerByEmailAndPassword(string email, string password) => CustomerDAO.FindCustomerByEmailAndPassword(email, password);
+        public Customer Get(int id) => CustomerDAO.Get(id);
 
-        public Customer FindCustomerById(int id) => CustomerDAO.FindCustomerById(id);
+        public List<Customer> GetAll() => CustomerDAO.GetAll();
 
-        public Customer FindCustomerByEmail(string email) => CustomerDAO.FindCustomerByEmail(email);
+        public void Save(Customer customer) => CustomerDAO.Save(customer);
 
-        public List<Customer> GetCustomers() => CustomerDAO.GetCustomers();
-
-        public void SaveCustomer(Customer customer) => CustomerDAO.SaveCustomer(customer);
-
-        public void UpdateCustomer(Customer customer) => CustomerDAO.UpdateCustomer(customer);
+        public void Update(Customer customer) => CustomerDAO.Update(customer);
     }
 }

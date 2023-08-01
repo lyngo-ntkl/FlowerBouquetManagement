@@ -7,7 +7,24 @@ namespace DataAccessLayer
 {
     public class CustomerDAO
     {
-        public static List<Customer> GetCustomers()
+        private static CustomerDAO instance;
+        private static readonly object locker = new object();
+        private CustomerDAO() { }
+        public static CustomerDAO Instance
+        {
+            get
+            {
+                lock (locker)
+                {
+                    if (instance == null)
+                    {
+                        instance = new CustomerDAO();
+                    }
+                    return instance;
+                }
+            }
+        }
+        public static List<Customer> GetAll()
         {
             List<Customer> customers = new List<Customer>();
             try
@@ -23,7 +40,7 @@ namespace DataAccessLayer
             }
             return customers;
         }
-        public static Customer FindCustomerById(int id)
+        public static Customer Get(int id)
         {
             Customer customer = new Customer();
             try
@@ -39,39 +56,7 @@ namespace DataAccessLayer
             }
             return customer;
         }
-        public static Customer FindCustomerByEmail(string email)
-        {
-            Customer customer = new Customer();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    customer = context.Customers.SingleOrDefault(c => c.Email.Equals(email));
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return customer;
-        }
-        public static Customer FindCustomerByEmailAndPassword(string email, string password)
-        {
-            Customer customer = new Customer();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    customer = context.Customers.SingleOrDefault(c => c.Email == email && c.Password == password);
-                }
-            } catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return customer;
-        }
-        public static void SaveCustomer(Customer customer)
+        public static void Save(Customer customer)
         {
             try
             {
@@ -86,7 +71,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateCustomer(Customer customer)
+        public static void Update(Customer customer)
         {
             try
             {
@@ -101,7 +86,7 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-        public static void DeleteCustomer(Customer customer)
+        public static void Delete(Customer customer)
         {
             try
             {
@@ -115,39 +100,6 @@ namespace DataAccessLayer
             {
                 throw new Exception(e.Message);
             }
-        }
-
-        public static List<Customer> FindCustomersContainName(string name)
-        {
-            List<Customer> customers = new List<Customer>();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    customers = context.Customers.Where(customer => customer.CustomerName.Contains(name)).ToList();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return customers;
-        }
-        public static Customer GetCustomerWithTheLargestId()
-        {
-            Customer customer = new Customer();
-            try
-            {
-                using (var context = new FUFlowerBouquetManagementContext())
-                {
-                    customer = context.Customers.OrderByDescending(c => c.CustomerId).Max();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return customer;
         }
     }
 }
