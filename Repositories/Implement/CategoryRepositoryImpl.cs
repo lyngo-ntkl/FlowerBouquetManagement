@@ -10,11 +10,7 @@ namespace Repositories.Implement
 
         public Category FindCategoryById(int id) => CategoryDAO.FindCategoryById(id);
 
-<<<<<<< HEAD
-        public List<Category> GetCategorys() => CategoryDAO.GetCategories();
-=======
         public List<Category> GetCategories() => CategoryDAO.GetCategories();
->>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
 
         public void SaveCategory(Category category) => CategoryDAO.SaveCategory(category);
 

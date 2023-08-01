@@ -67,11 +67,11 @@ namespace DataAccessLayer
                 }
             } catch (Exception e)
             {
-<<<<<<< HEAD
-                throw e;
-=======
+// <<<<<<< HEAD
+                // throw e;
+// =======
                 throw new Exception(e.Message);
->>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
             }
             return orderDetail;
         }
@@ -121,10 +121,10 @@ namespace DataAccessLayer
                 throw new Exception(e.Message);
             }
         }
-<<<<<<< HEAD
-=======
+// <<<<<<< HEAD
+// =======
 
         //public static void Find
->>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
     }
 }

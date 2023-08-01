@@ -1,8 +1,8 @@
 ﻿using BusinessObjects.Models;
-<<<<<<< HEAD
-=======
+// <<<<<<< HEAD
+// =======
 using Microsoft.EntityFrameworkCore;
->>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,8 +43,8 @@ namespace DataAccessLayer
             }
             return order;
         }
-<<<<<<< HEAD
-=======
+// <<<<<<< HEAD
+// =======
         public static Order FindOrderByIdIncludeOrderDetails(int orderId)
         {
             Order order = new Order();
@@ -81,7 +81,7 @@ namespace DataAccessLayer
             }
             return order;
         }
->>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
+// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
         public static List<Order> FindOrderByCustomerId(int customerId)
         {
             List <Order> orders = new List<Order>();

@@ -2,10 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-<<<<<<< HEAD
-=======
-using System.Threading.Tasks;
->>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
 
 namespace DataAccessLayer
 {
@@ -43,8 +39,6 @@ namespace DataAccessLayer
             }
             return customer;
         }
-<<<<<<< HEAD
-=======
         public static Customer FindCustomerByEmail(string email)
         {
             Customer customer = new Customer();
@@ -62,7 +56,6 @@ namespace DataAccessLayer
             }
             return customer;
         }
->>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
         public static Customer FindCustomerByEmailAndPassword(string email, string password)
         {
             Customer customer = new Customer();

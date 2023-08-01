@@ -4,11 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-<!-- <<<<<<< HEAD -->
-<!-- ======= -->
   <!-- <ItemGroup>
     <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
   </ItemGroup> -->
 
-<!-- >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79 -->
 </Project>
