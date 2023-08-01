@@ -26,15 +26,20 @@ namespace BusinessObjects.Models
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
 
+        public IConfiguration GetConfiguration()
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+            return configuration;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                IConfiguration configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .Build();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("FlowerBouquetStoreDB"));
+                optionsBuilder.UseSqlServer(GetConfiguration()["ConnectionStrings:FlowerBouquetStoreDB"]);
             }
         }
 
