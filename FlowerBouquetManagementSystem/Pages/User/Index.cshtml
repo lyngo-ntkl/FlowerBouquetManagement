@@ -1,11 +1,18 @@
 ﻿@page
-@model FlowerBouquetManagementSystem.Pages.IndexModel
+@model FlowerBouquetManagementSystemWebApp.Pages.User.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Flower Bouquets</h1>
+<form>
+    <label for="name">Name</label>
+    <input type="search" name="name"/>
+    <label for="categoryId">Category</label>
+    <select name="categoryId" asp-items="ViewBag.Categories"></select>
+    <button type="submit">Search</button>
+</form>
 
 <p>
     <a asp-page="Admin/FlowerBouquetCRUD/Create">Create New</a>

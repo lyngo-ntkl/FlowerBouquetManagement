@@ -17,7 +17,17 @@ $(() => {
     function LoadFlowerBouquets() {
         $.ajax({
             method: 'GET',
-            url: '/?handler=FlowerBouquets',
+            url: '/Admin/FlowerBouquetCRUD/Index?handler=FlowerBouquets',
+            success: function (result) {
+                DrawFlowerTableAdmin(result);
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        });
+        $.ajax({
+            method: 'GET',
+            url: '/User/Index?handler=FlowerBouquets',
             success: function (result) {
                 DrawFlowerTable(result);
             },
@@ -27,25 +37,18 @@ $(() => {
         });
     }
 
-    function DrawFlowerTable(result) {
+    function DrawFlowerTableAdmin(result) {
         var values = result.$values;
         var tr = '';
-        //console.log(result);
-        //console.log(Object.keys(result))
-        //console.log(result["id"]);
-        //console.log(result['id']);
-        //console.log(result.$id);
-        //$.each(result, (key, value) => {
-            //console.log(value);
-            for (let i = 0; i < values.length; i++) {
-                var v = values[i];
-                tr += `<tr>
+        for (let i = 0; i < values.length; i++) {
+            var v = values[i];
+            tr += `<tr>
             <td>${v.flowerBouquetName}</td>
             <td>${v.description}</td>
             <td>${v.unitPrice}</td>
             <td>${v.unitsInStock}</td>
             <td>${v.flowerBouquetStatus}</td>
-            
+            <td>${v.category.categoryName}</td>
             <td>
                 <a href="/Admin/FlowerBouquetCRUD/Edit?flowerBouquetId=${v.flowerBouquetId}">Edit</a> |
                 <a href="/Admin/FlowerBouquetCRUD/Details?flowerBouquetId=${v.flowerBouquetId}">Details</a> |
@@ -53,8 +56,39 @@ $(() => {
             </td>
         </tr>`
             }
-        //});
         $('#flowerTable').html(tr);
+    }
+
+    function DrawFlowerTable(result) {
+        var values = result.$values;
+        console.log(result);
+        console.log(values);
+        var tr = '';
+        for (let i = 0; i < values.length; i++) {
+            var v = values[i];
+            console.log(v)
+            var cate = v.category.categoryName;
+            console.log(cate)
+            // missing cate
+            
+            tr += `<tr>
+            <td>${v.flowerBouquetName}</td>
+            <td>${v.description}</td>
+            <td>${v.unitsInStock}</td>
+            <td>${v.unitsInStock}</td>
+            <td>${v.flowerBouquetStatus}</td>
+            <td>${v.category.categoryName}</td>
+            
+            <td>
+                <form method="post">
+                    <input type="hidden" name="id" value="@item.FlowerBouquetId"/>
+                    <button asp-page-handler="AddCart" type="submit" name="action" value="add">Add to cart</button> |
+                    <button>Details</button> |
+                    <button type ="submit" name="action" value="buy">Buy now</button>
+                </form>
+            </td>
+        </tr>`
+        }
     }
 
     function LoadCustomers() {

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Repositories;
+using Repositories.Implement;
 using System;
 using System.Text.Json.Serialization;
 
@@ -23,19 +25,17 @@ namespace FlowerBouquetManagementSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages(
-            //options =>
-            //{
-            //    options.Conventions.AuthorizeFolder("/Admin");
-            //}
+            //options => { options.Conventions.AuthorizeFolder("/Admin"); }
             )
             .AddJsonOptions(options => {
-            //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                // options.JsonSerializerOptions.PropertyNamingPolicy = null; // change default json naming policy (camelCase)
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                options.JsonSerializerOptions.DefaultBufferSize = 10000000;
                 //options.JsonSerializerOptions.MaxDepth = 64;
             })
             .AddRazorPagesOptions(options =>
             {
-                options.Conventions.AddPageRoute("/Shared/Index", "");
+                options.Conventions.AddPageRoute("/User/Index", "");
             })
             ;
             services
@@ -67,6 +67,13 @@ namespace FlowerBouquetManagementSystem
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
             services.AddSignalR();
+            // use for dependency injection?
+            services.AddScoped<CategoryRepository, CategoryRepositoryImpl>();
+            services.AddScoped<SupplierRepository, SupplierRepositoryImpl>();
+            services.AddScoped<CustomerRepository, CustomerRepositoryImpl>();
+            services.AddScoped<FlowerBouquetRepository, FlowerBouquetRepositoryImpl>();
+            services.AddScoped<OrderDetailRepository, OrderDetailRepositoryImpl>();
+            services.AddScoped<OrderRepository, OrderRepositoryImpl>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,6 +101,7 @@ namespace FlowerBouquetManagementSystem
 
             app.UseSession();
 
+            // map end points for signalr
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

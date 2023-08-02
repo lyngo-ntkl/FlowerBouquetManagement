@@ -13,20 +13,23 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
     [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
-        private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
-        private readonly CategoryRepository _categoryRepository = new CategoryRepositoryImpl();
-        private readonly SupplierRepository _supplierRepository = new SupplierRepositoryImpl();
+        private readonly FlowerBouquetRepository _flowerBouquetRepository;
+        private readonly CategoryRepository _categoryRepository;
+        private readonly SupplierRepository _supplierRepository;
         private readonly IHubContext<FlowerHub> _flowerHub;
 
-        public CreateModel(IHubContext<FlowerHub> hubContext)
+        public CreateModel(FlowerBouquetRepository flowerBouquetRepository, CategoryRepository categoryRepository, SupplierRepository supplierRepository, IHubContext<FlowerHub> hubContext)
         {
             _flowerHub = hubContext;
+            _categoryRepository = categoryRepository;
+            _supplierRepository = supplierRepository;
+            _flowerBouquetRepository = flowerBouquetRepository;
         }
 
         public IActionResult OnGet()
         {
-            ViewData["CategoryName"] = new SelectList(_categoryRepository.GetCategories(), "CategoryId", "CategoryName");
-            ViewData["SupplierName"] = new SelectList(_supplierRepository.GetSuppliers(), "SupplierId", "SupplierName");
+            ViewData["CategoryName"] = new SelectList(_categoryRepository.GetAll(), "CategoryId", "CategoryName");
+            ViewData["SupplierName"] = new SelectList(_supplierRepository.GetAll(), "SupplierId", "SupplierName");
             return Page();
         }
 
@@ -41,7 +44,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
                 return RedirectToPage("./Create");
             }
 
-            _flowerBouquetRepository.SaveFlowerBouquet(FlowerBouquet);
+            _flowerBouquetRepository.Save(FlowerBouquet);
             _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
 
             return RedirectToPage("/Index");

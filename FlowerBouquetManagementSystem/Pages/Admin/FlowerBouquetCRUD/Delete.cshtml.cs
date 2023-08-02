@@ -13,12 +13,13 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
     [Authorize(Roles = "Admin")]
     public class DeleteModel : PageModel
     {
-        private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
+        private readonly FlowerBouquetRepository _flowerBouquetRepository;
         private readonly IHubContext<FlowerHub> _flowerHub;
 
-        public DeleteModel(IHubContext<FlowerHub> hubContext)
+        public DeleteModel(IHubContext<FlowerHub> hubContext, FlowerBouquetRepository flowerBouquetRepository)
         {
             this._flowerHub = hubContext;
+            _flowerBouquetRepository = flowerBouquetRepository;
         }
 
         [BindProperty]
@@ -31,7 +32,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
                 return NotFound();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(flowerBouquetId.Value);
+            FlowerBouquet = _flowerBouquetRepository.Get(flowerBouquetId.Value);
 
             if (FlowerBouquet == null)
             {
@@ -47,11 +48,11 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
                 return NotFound();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetById(id.Value);
+            FlowerBouquet = _flowerBouquetRepository.Get(id.Value);
 
             if (FlowerBouquet != null)
             {
-                _flowerBouquetRepository.DeleteFlowerBouquet(FlowerBouquet);
+                _flowerBouquetRepository.Delete(FlowerBouquet);
                 _flowerHub.Clients.All.SendAsync("LoadFlowerBouquet");
             } else
             {

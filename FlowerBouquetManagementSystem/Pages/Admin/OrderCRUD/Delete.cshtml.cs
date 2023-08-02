@@ -8,9 +8,9 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
 {
     public class DeleteModel : PageModel
     {
-        private readonly OrderRepository _orderRepository = new OrderRepositoryImpl();
+        private readonly OrderRepository _orderRepository;
 
-        public DeleteModel()
+        public DeleteModel(OrderRepository orderRepository)
         {
         }
 
@@ -25,7 +25,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
                 return Page();
             }
 
-            Order = _orderRepository.FindOrderById(id.Value);
+            Order = _orderRepository.Get(id.Value);
 
             if (Order == null)
             {
@@ -43,7 +43,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
                 return Page();
             }
 
-            Order = _orderRepository.FindOrderById(id.Value);
+            Order = _orderRepository.Get(id.Value);
 
             if (Order == null)
             {
@@ -51,7 +51,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
                 return Page();
             }
 
-            _orderRepository.DeleteOrder(Order);
+            _orderRepository.Delete(Order);
 
             return RedirectToPage("./Index");
         }

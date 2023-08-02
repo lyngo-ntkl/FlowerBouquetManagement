@@ -65,6 +65,12 @@
                 <td>
                     <a asp-page="Cart" asp-page-handler="addtocart" asp-route-id="@item.FlowerBouquetId">Add To Cart</a>
                 </td>
+                <form method="post">
+                    <input type="hidden" name="id" value="@item.FlowerBouquetId"/>
+                    <button asp-page-handler="AddCart" type="submit" name="action" value="add">Add to cart</button> |
+                    <button>Details</button> |
+                    <button type ="submit" name="action" value="buy">Buy now</button>
+                </form>
         </tr>
 }
     </tbody>

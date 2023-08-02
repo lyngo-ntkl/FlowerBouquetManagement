@@ -16,27 +16,21 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
     [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
-        private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
+        private readonly FlowerBouquetRepository _flowerBouquetRepository;
         private readonly IHubContext<FlowerHub> _flowerHub;
 
-        public IndexModel(IHubContext<FlowerHub> flowerHub)
+        public IndexModel(IHubContext<FlowerHub> flowerHub, FlowerBouquetRepository flowerBouquetRepository)
         {
             _flowerHub = flowerHub;
+            _flowerBouquetRepository = flowerBouquetRepository;
         }
 
         public IList<FlowerBouquet> FlowerBouquets { get; set; }
 
         public IActionResult OnGetFlowerBouquets()
         {
-            //FlowerBouquets = _flowerBouquetRepository.GetFlowerBouquets();
-            FlowerBouquets = _flowerBouquetRepository.GetFlowerBouquetsWithCategoryAndSupplier();
-            //var a = new JsonResult(FlowerBouquets);
-            //var b = a.ToString();
-            //return a;
-            //var a = JsonSerializer.Serialize(FlowerBouquets);
-            //return a;
-            return new JsonResult(_flowerBouquetRepository.GetFlowerBouquets());
-            //return new OkObjectResult(FlowerBouquets);
+            FlowerBouquets = _flowerBouquetRepository.GetAll();
+            return new JsonResult(_flowerBouquetRepository.GetAll());
         }
     }
 }

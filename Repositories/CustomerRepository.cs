@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Repositories
 {
-    internal interface CustomerRepository
+    public interface CustomerRepository
     {
         List<Customer> GetAll();
         Customer Get(int id);

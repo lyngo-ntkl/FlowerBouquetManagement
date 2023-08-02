@@ -11,10 +11,11 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
     [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
-        private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
+        private readonly CustomerRepository _customerRepository;
 
-        public EditModel()
+        public EditModel(CustomerRepository customerRepository)
         {
+            _customerRepository = customerRepository;
         }
 
         [BindProperty]
@@ -28,7 +29,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
                 return Page();
             }
 
-            Customer = _customerRepository.FindCustomerById(id.Value);
+            Customer = _customerRepository.Get(id.Value);
 
             if (Customer == null)
             {
@@ -47,13 +48,13 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
                 return Page();
             }
 
-            if(_customerRepository.FindCustomerById(Customer.CustomerId) == null)
+            if(_customerRepository.Get(Customer.CustomerId) == null)
             {
                 ModelState.AddModelError("NotFound", "Customer not found");
                 return Page();
             }
 
-            _customerRepository.UpdateCustomer(Customer);
+            _customerRepository.Update(Customer);
 
             return RedirectToPage("./Index");
         }

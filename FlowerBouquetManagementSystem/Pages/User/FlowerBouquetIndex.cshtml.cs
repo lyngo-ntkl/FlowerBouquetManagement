@@ -9,12 +9,13 @@ namespace FlowerBouquetManagementSystem.Pages.User
 {
     public class FlowerBouquetIndex : PageModel
     {
-        private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
+        private readonly FlowerBouquetRepository _flowerBouquetRepository;
         private const string BuyAction = "Buy now";
         private const string AddToCartAction = "Add to Cart";
 
-        public FlowerBouquetIndex()
+        public FlowerBouquetIndex(FlowerBouquetRepository flowerBouquetRepository)
         {
+            _flowerBouquetRepository = flowerBouquetRepository;
         }
 
         public IList<FlowerBouquet> FlowerBouquets { get;set; }
@@ -27,7 +28,7 @@ namespace FlowerBouquetManagementSystem.Pages.User
 
         public void OnGet()
         {
-            FlowerBouquets = _flowerBouquetRepository.GetFlowerBouquetsWithCategoryAndSupplier();
+            FlowerBouquets = _flowerBouquetRepository.GetAll();
         }
 
         public IActionResult OnPost(string action)

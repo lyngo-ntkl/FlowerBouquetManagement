@@ -8,16 +8,17 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
 {
     public class IndexModel : PageModel
     {
-        private readonly OrderRepository _orderRepository = new OrderRepositoryImpl();
-        public IndexModel()
+        private readonly OrderRepository _orderRepository;
+        public IndexModel(OrderRepository orderRepository)
         {
+            _orderRepository = orderRepository;
         }
 
         public IList<Order> Orders { get;set; }
 
         public void OnGet()
         {
-            Orders = _orderRepository.GetOrders();
+            Orders = _orderRepository.GetAll();
         }
     }
 }

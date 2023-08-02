@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repositories;
 using Repositories.Implement;
-using System.ComponentModel.DataAnnotations;
 using BusinessObjects.Models;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -11,14 +10,23 @@ using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
+using DTOs;
+using System.Linq;
 
 namespace FlowerBouquetManagementSystem.Pages
 {
     public class LoginModel : PageModel
     {
-        private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
+        private readonly CustomerRepository _customerRepository;
+        private readonly IConfiguration _configuration;
+        public LoginModel(CustomerRepository customerRepository, IConfiguration configuration)
+        {
+            _customerRepository = customerRepository;
+            _configuration = configuration;
+        }
+
         [BindProperty]
-        public Credential CredentialObj { get; set; }
+        public AuthenticationDTO CredentialObj { get; set; }
         public Customer Customer { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
@@ -34,7 +42,7 @@ namespace FlowerBouquetManagementSystem.Pages
             // authorization
 
 
-            if (CredentialObj.Email.Equals(AdminAccountInfo.Email) && CredentialObj.Password.Equals(AdminAccountInfo.Password))
+            if (CredentialObj.Email.Equals(_configuration["adminAccount:email"]) && CredentialObj.Password.Equals(_configuration["adminAccount:password"]))
             {
                 List<Claim> claims = new List<Claim>
                 {
@@ -49,7 +57,7 @@ namespace FlowerBouquetManagementSystem.Pages
                 return new RedirectResult("/Index");
             }
 
-            Customer = _customerRepository.FindCustomerByEmailAndPassword(CredentialObj.Email, CredentialObj.Password);
+            Customer = _customerRepository.GetAll().Where(x => x.Email.Equals(CredentialObj.Email) && x.Password.Equals(CredentialObj.Password)).SingleOrDefault();
             if (Customer != null)
             {
                 List<Claim> claims = new List<Claim>
@@ -73,17 +81,5 @@ namespace FlowerBouquetManagementSystem.Pages
 
             return Page();
         }
-    }
-
-    public class Credential
-    {
-        [Required(ErrorMessage = "Email address is required")]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-        [Required(ErrorMessage = "Password is required")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
     }
 }

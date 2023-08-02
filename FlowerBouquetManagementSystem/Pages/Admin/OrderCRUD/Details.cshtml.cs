@@ -27,7 +27,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
                 return Page();
             }
 
-            Order = _orderRepository.FindOrderById(id.Value);
+            Order = _orderRepository.Get(id.Value);
 
             if (Order == null)
             {
@@ -35,7 +35,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
                 return Page();
             }
 
-            OrderDetails = _orderDetailRepository.FindOrderDetailByOrderId(id.Value);
+            //OrderDetails = _orderDetailRepository.FindOrderDetailByOrderId(id.Value);
 
             return Page();
         }

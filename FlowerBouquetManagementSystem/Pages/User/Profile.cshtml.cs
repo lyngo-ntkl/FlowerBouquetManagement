@@ -13,10 +13,11 @@ namespace FlowerBouquetManagementSystem.Pages.User
     [Authorize(Roles = "User")]
     public class ProfileModel : PageModel
     {
-        private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
+        private readonly CustomerRepository _customerRepository;
 
-        public ProfileModel()
+        public ProfileModel(CustomerRepository customerRepository)
         {
+            _customerRepository = customerRepository;
         }
 
         [BindProperty]
@@ -31,7 +32,7 @@ namespace FlowerBouquetManagementSystem.Pages.User
                 return Page();
             }
 
-            Customer = _customerRepository.FindCustomerById(Int32.Parse(claims));
+            Customer = _customerRepository.Get(Int32.Parse(claims));
 
             if (Customer == null)
             {
@@ -50,13 +51,13 @@ namespace FlowerBouquetManagementSystem.Pages.User
                 return Page();
             }
 
-            if(_customerRepository.FindCustomerById(Customer.CustomerId) == null)
+            if(_customerRepository.Get(Customer.CustomerId) == null)
             {
                 ModelState.AddModelError("NotFound", "Customer not found");
                 return Page();
             }
 
-            _customerRepository.UpdateCustomer(Customer);
+            _customerRepository.Update(Customer);
 
             return RedirectToPage("./Index");
         }

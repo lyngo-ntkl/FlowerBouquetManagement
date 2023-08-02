@@ -11,7 +11,13 @@ namespace FlowerBouquetManagementSystem.Pages.User
 {
     public class CartModel : PageModel
     {
-        private FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();
+        private FlowerBouquetRepository _flowerBouquetRepository;
+
+        public CartModel(FlowerBouquetRepository flowerBouquetRepository)
+        {
+            _flowerBouquetRepository = flowerBouquetRepository;
+        }
+
         public List<CartItem> Cart { get; set; }
         public decimal Total { get; set; }
         public void OnGet()
@@ -28,7 +34,7 @@ namespace FlowerBouquetManagementSystem.Pages.User
 
         public IActionResult OnGetBuyNow(int id)
         {
-            var flowerBouquet = _flowerBouquetRepository.FindFlowerBouquetById(id);
+            var flowerBouquet = _flowerBouquetRepository.Get(id);
             Cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "Cart");
             if (Cart == null)
             {
@@ -64,7 +70,7 @@ namespace FlowerBouquetManagementSystem.Pages.User
 
         public IActionResult OnGetAddToCart(int id)
         {
-            var flowerBouquet = _flowerBouquetRepository.FindFlowerBouquetById(id);
+            var flowerBouquet = _flowerBouquetRepository.Get(id);
             Cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "Cart");
             if (Cart == null)
             {

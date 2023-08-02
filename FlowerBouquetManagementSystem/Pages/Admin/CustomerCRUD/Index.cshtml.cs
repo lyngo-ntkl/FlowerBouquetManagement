@@ -13,19 +13,20 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
     [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
-        private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
+        private readonly CustomerRepository _customerRepository;
         private readonly IHubContext<FlowerHub> _hubContext;
 
-        public IndexModel(IHubContext<FlowerHub> hubContext)
+        public IndexModel(IHubContext<FlowerHub> hubContext, CustomerRepository customerRepository)
         {
             this._hubContext = hubContext;
+            this._customerRepository = customerRepository;
         }
 
         public IList<Customer> Customer { get;set; }
 
         public void OnGet()
         {
-            Customer = _customerRepository.GetCustomers();
+            Customer = _customerRepository.GetAll();
         }
     }
 }

@@ -21,8 +21,8 @@ namespace FlowerBouquetManagementSystem.Pages.User
         {
             Cart = cart;
             Total = total;
-            var claims = User.Claims.FirstOrDefault(claim => claim.Type.Equals(ClaimTypes.Sid)).Value;
-            Customer = _customerRepository.FindCustomerById(Int32.Parse(claims));
+            var customerId = User.Claims.FirstOrDefault(claim => claim.Type.Equals(ClaimTypes.Sid)).Value;
+            Customer = _customerRepository.Get(Int32.Parse(customerId));
         }
     }
 }

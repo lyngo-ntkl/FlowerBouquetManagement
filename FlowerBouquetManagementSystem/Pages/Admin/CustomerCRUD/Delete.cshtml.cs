@@ -5,6 +5,7 @@ using Repositories.Implement;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using System.Linq;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
@@ -28,7 +29,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
                 return Page();
             }
 
-            Customer = _customerRepository.FindCustomerById(id.Value);
+            Customer = _customerRepository.GetAll().Where(x => x.CustomerId == id).SingleOrDefault();
 
             if (Customer == null)
             {
@@ -46,7 +47,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
                 return Page();
             }
 
-            Customer = _customerRepository.FindCustomerById(id.Value);
+            Customer = _customerRepository.GetAll().Where(x => x.CustomerId == id).SingleOrDefault();
 
             if (Customer == null)
             {
@@ -54,7 +55,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
                 return Page();
             }
 
-            _customerRepository.DeleteCustomer(Customer);
+            _customerRepository.Delete(Customer);
 
             return RedirectToPage("./Index");
         }

@@ -1,19 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BusinessObjects.Models;
+using DTOs;
 using Repositories;
 using Repositories.Implement;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using AutoMapper;
+using BusinessObjects.Models;
 
 namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
 {
     [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
-        private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
-
-        public CreateModel()
+        private readonly CustomerRepository _customerRepository;
+        private IMapper _mapper;
+        public CreateModel(CustomerRepository customerRepository, IMapper mapper)
         {
+            _customerRepository = customerRepository;
+            _mapper = mapper;
         }
 
         public IActionResult OnGet()
@@ -22,7 +27,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
         }
 
         [BindProperty]
-        public Customer Customer { get; set; }
+        public CustomerDTO Customer { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public IActionResult OnPost()
@@ -32,13 +37,13 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.CustomerCRUD
                 return Page();
             }
 
-            if (_customerRepository.FindCustomerByEmail(Customer.Email) != null)
+            if (_customerRepository.GetAll().Where(x => x.Email.Equals(Customer.Email)) != null)
             {
                 ModelState.AddModelError("DuplicateEmail", Customer.Email + " has been registered");
                 return Page();
             }
 
-            _customerRepository.SaveCustomer(Customer);
+            _customerRepository.Save(_mapper.Map<Customer>(Customer));
 
             return RedirectToPage("/Login");
         }

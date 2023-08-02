@@ -11,16 +11,18 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
 {
     public class CreateModel : PageModel
     {
-        private readonly OrderRepository _orderRepository = new OrderRepositoryImpl();
-        private readonly CustomerRepository _customerRepository = new CustomerRepositoryImpl();
+        private readonly OrderRepository _orderRepository;
+        private readonly CustomerRepository _customerRepository;
 
-        public CreateModel()
+        public CreateModel(OrderRepository orderRepository, CustomerRepository customerRepository)
         {
+            _orderRepository = orderRepository;
+            _customerRepository = customerRepository;
         }
 
         public IActionResult OnGet()
         {
-            ViewData["CustomerId"] = new SelectList(_customerRepository.GetCustomers(), "Customer Email", "Email");
+            ViewData["CustomerId"] = new SelectList(_customerRepository.GetAll(), "Customer Email", "Email");
             return Page();
         }
 
@@ -35,7 +37,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
                 return Page();
             }
 
-            _orderRepository.SaveOrder(Order);
+            _orderRepository.Save(Order);
 
             return RedirectToPage("./Index");
         }

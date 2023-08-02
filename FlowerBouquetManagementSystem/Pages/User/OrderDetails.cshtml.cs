@@ -9,11 +9,13 @@ namespace FlowerBouquetManagementSystem.Pages.User
 {
     public class OrderDetailsModel : PageModel
     {
-        private readonly OrderRepository _orderRepository = new OrderRepositoryImpl();
-        private readonly OrderDetailRepository _orderDetailRepository = new OrderDetailRepositoryImpl();
+        private readonly OrderRepository _orderRepository;
+        private readonly OrderDetailRepository _orderDetailRepository;
 
-        public OrderDetailsModel()
+        public OrderDetailsModel(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository)
         {
+            _orderRepository = orderRepository;
+            _orderDetailRepository = orderDetailRepository;
         }
 
         public Order Order { get; set; }
@@ -27,7 +29,7 @@ namespace FlowerBouquetManagementSystem.Pages.User
                 return Page();
             }
 
-            Order = _orderRepository.FindOrderById(id.Value);
+            Order = _orderRepository.Get(id.Value);
 
             if (Order == null)
             {
@@ -35,7 +37,7 @@ namespace FlowerBouquetManagementSystem.Pages.User
                 return Page();
             }
 
-            OrderDetails = _orderDetailRepository.FindOrderDetailByOrderId(id.Value);
+            //OrderDetails = _orderDetailRepository.FindOrderDetailByOrderId(id.Value);
 
             return Page();
         }

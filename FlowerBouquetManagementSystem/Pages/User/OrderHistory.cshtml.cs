@@ -6,6 +6,7 @@ using Repositories.Implement;
 using System.Security.Claims;
 using System.Linq;
 using System;
+using FlowerBouquetManagementSystemWebApp.Helper;
 
 namespace FlowerBouquetManagementSystem.Pages.User
 {
@@ -16,13 +17,13 @@ namespace FlowerBouquetManagementSystem.Pages.User
         {
         }
 
-        public IList<Order> Orders { get;set; }
+        public PaginatedList<Order> Orders { get;set; }
 
-        public void OnGet()
+        public void OnGet(int? pageNumber, int? pageSize)
         {
-            var claims = User.Claims.FirstOrDefault(claim => claim.Type.Equals(ClaimTypes.Sid)).Value;
-
-            Orders = _orderRepository.FindOrderByCustomerId(Int32.Parse(claims));
+            var customerId = User.Claims.FirstOrDefault(x => x.Equals(ClaimTypes.Sid)).Value;
+            var orders = _orderRepository.GetAll().Where(x => x.CustomerId.Equals(customerId));
+            Orders = PaginatedList<Order>.ToPagedList(orders, pageNumber ?? 1, pageSize ?? 10);
         }
     }
 }

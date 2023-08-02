@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-// <<<<<<< HEAD
-// =======
-// using System.ComponentModel;
-// using System.ComponentModel.DataAnnotations;
-// using System.ComponentModel.DataAnnotations.Schema;
-// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
+using System.Text.Json.Serialization;
 
 #nullable disable
 
 namespace BusinessObjects.Models
 {
+    public static class FlowerBouquetStatus
+    {
+        public static byte Available = 1;
+        public static byte Unavailable = 0;
+    }
     public partial class FlowerBouquet
     {
         public FlowerBouquet()
@@ -18,7 +18,6 @@ namespace BusinessObjects.Models
             OrderDetails = new HashSet<OrderDetail>();
         }
 
-// <<<<<<< HEAD
         public int FlowerBouquetId { get; set; }
         public int CategoryId { get; set; }
         public string FlowerBouquetName { get; set; }
@@ -55,8 +54,8 @@ namespace BusinessObjects.Models
 //         [DisplayName("Category")]
 //         public virtual Category Category { get; set; }
 //         [DisplayName("Supplier")]
-// >>>>>>> 3b9f6448989d45199248f460aee90fba0f6e7f79
         public virtual Supplier Supplier { get; set; }
+        [JsonIgnore]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using BusinessObjects.Models;
 using Repositories;
 using Repositories.Implement;
+using System.Linq;
 
 namespace FlowerBouquetManagementSystem.Pages
 {
@@ -30,13 +31,13 @@ namespace FlowerBouquetManagementSystem.Pages
                 return Page();
             }
 
-            if (_customerRepository.FindCustomerByEmail(Customer.Email) != null)
+            if (_customerRepository.GetAll().Where(x => x.Email.Equals(Customer.Email)) != null)
             {
                 ModelState.AddModelError("DuplicateEmail", Customer.Email + " has been registered");
                 return Page();
             }
 
-            _customerRepository.SaveCustomer(Customer);
+            _customerRepository.Save(Customer);
 
             return RedirectToPage("/Login");
         }

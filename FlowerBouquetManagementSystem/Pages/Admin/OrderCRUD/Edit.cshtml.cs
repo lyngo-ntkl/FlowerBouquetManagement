@@ -27,14 +27,14 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
                 return Page();
             }
 
-            Order = _orderRepository.FindOrderById(id.Value);
+            Order = _orderRepository.Get(id.Value);
 
             if (Order == null)
             {
                 ModelState.AddModelError("NotFound", "Order not found");
                 return Page();
             }
-            ViewData["CustomerId"] = new SelectList(_customerRepository.GetCustomers(), "CustomerId", "CustomerName");
+            ViewData["CustomerId"] = new SelectList(_customerRepository.GetAll(), "CustomerId", "CustomerName");
             return Page();
         }
 
@@ -47,13 +47,13 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.OrderCRUD
                 return Page();
             }
 
-            if(_orderRepository.FindOrderById(Order.OrderId) == null)
+            if(_orderRepository.Get(Order.OrderId) == null)
             {
                 ModelState.AddModelError("NotFound", "Order not found");
                 return Page();
             }
 
-            _orderRepository.UpdateOrder(Order);
+            _orderRepository.Update(Order);
 
             return RedirectToPage("./Index");
         }

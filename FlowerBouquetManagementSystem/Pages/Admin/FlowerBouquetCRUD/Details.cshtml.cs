@@ -31,7 +31,7 @@ namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
                 return NotFound();
             }
 
-            FlowerBouquet = _flowerBouquetRepository.FindFlowerBouquetsByIdWithCategoryAndSupplier(id.Value);
+            FlowerBouquet = _flowerBouquetRepository.Get(id.Value);
 
             if (FlowerBouquet == null)
             {
