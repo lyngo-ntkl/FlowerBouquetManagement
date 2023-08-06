@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System;
 using System.Text.Json;
 
-namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
+namespace FlowerBouquetManagementSystemWebApp.Pages.Admin.FlowerBouquetCRUD
 {
     [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel

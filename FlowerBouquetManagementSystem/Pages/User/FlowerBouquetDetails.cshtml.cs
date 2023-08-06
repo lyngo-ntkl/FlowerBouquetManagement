@@ -9,9 +9,9 @@ using System.Data;
 using FlowerBouquetManagementSystem.SignalR;
 using Microsoft.AspNetCore.SignalR;
 
-namespace FlowerBouquetManagementSystem.Pages.Admin.FlowerBouquetCRUD
+namespace FlowerBouquetManagementSystemWebApp.Pages.User
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class FlowerBouquetDetailsModel : PageModel
     {
         private readonly FlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepositoryImpl();

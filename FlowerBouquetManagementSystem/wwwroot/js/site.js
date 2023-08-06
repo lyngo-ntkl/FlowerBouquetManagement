@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 $(() => {
-    //LoadFlowerBouquets()
+    LoadFlowerBouquets()
     var connection = new signalR.HubConnectionBuilder().withUrl("/flowerHub").build();
     connection.start();
 
@@ -17,17 +17,7 @@ $(() => {
     function LoadFlowerBouquets() {
         $.ajax({
             method: 'GET',
-            url: '/Admin/FlowerBouquetCRUD/Index?handler=FlowerBouquets',
-            success: function (result) {
-                DrawFlowerTableAdmin(result);
-            },
-            error: (error) => {
-                console.log(error)
-            }
-        });
-        $.ajax({
-            method: 'GET',
-            url: '/User/Index?handler=FlowerBouquets',
+            url: '/User/UserIndexFlowerBouquet?handler=FlowerBouquets',
             success: function (result) {
                 DrawFlowerTable(result);
             },
@@ -35,13 +25,22 @@ $(() => {
                 console.log(error)
             }
         });
+        //$.ajax({
+        //    method: 'GET',
+        //    url: '/Admin/FlowerBouquetCRUD/Index?handler=FlowerBouquets',
+        //    success: function (result) {
+        //        DrawFlowerTableAdmin(result);
+        //    },
+        //    error: (error) => {
+        //        console.log(error)
+        //    }
+        //});
     }
 
     function DrawFlowerTableAdmin(result) {
-        var values = result.$values;
         var tr = '';
-        for (let i = 0; i < values.length; i++) {
-            var v = values[i];
+        for (let i = 0; i < result.length; i++) {
+            var v = result[i];
             tr += `<tr>
             <td>${v.flowerBouquetName}</td>
             <td>${v.description}</td>
@@ -60,36 +59,89 @@ $(() => {
     }
 
     function DrawFlowerTable(result) {
-        var values = result.$values;
-        console.log(result);
-        console.log(values);
-        var tr = '';
-        for (let i = 0; i < values.length; i++) {
-            var v = values[i];
-            console.log(v)
-            var cate = v.category.categoryName;
-            console.log(cate)
-            // missing cate
+        var list = document.getElementById('flowerTable');
+        for (let i = 0; i < result.length; i++) {
+            var v = result[i];
+            var tr = document.createElement("tr");
+            var name = document.createElement("td"); name.textContent = v.flowerBouquetName; tr.appendChild(name);
+            var description = document.createElement("td"); description.textContent = v.description; tr.appendChild(description);
+            var unitPrice = document.createElement("td"); unitPrice.textContent = v.unitPrice; tr.appendChild(unitPrice);
+            var unitsInStock = document.createElement("td"); unitsInStock.textContent = v.unitsInStock; tr.appendChild(unitsInStock);
+            var status = document.createElement("td"); status.textContent = v.flowerBouquetStatus; tr.appendChild(status);
+            var category = document.createElement("td"); category.textContent = v.category.categoryName; tr.appendChild(category);
+            var btnAdd = document.createElement("button"); btnAdd.textContent = 'Add to cart'; btnAdd.classList.add("btn-link");
+            btnAdd.onclick = function () {
+                    $.ajax({
+                        type: "POST",
+                        //headers: { "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val() },
+                        url: '/User/UserIndexFlowerBouquet?handler=AddCart',
+                        data: {
+                            "id": v.flowerBouquetId
+                        },
+                        contentType: "application/x-www-form-urlencoded",
+                        error: (error) => {
+                            console.log(error)
+                        }
+                    }).done(function (response) {
+                        alert('Add to cart');
+                    });
+            };
             
-            tr += `<tr>
-            <td>${v.flowerBouquetName}</td>
-            <td>${v.description}</td>
-            <td>${v.unitsInStock}</td>
-            <td>${v.unitsInStock}</td>
-            <td>${v.flowerBouquetStatus}</td>
-            <td>${v.category.categoryName}</td>
-            
-            <td>
-                <form method="post">
-                    <input type="hidden" name="id" value="@item.FlowerBouquetId"/>
-                    <button asp-page-handler="AddCart" type="submit" name="action" value="add">Add to cart</button> |
-                    <button>Details</button> |
-                    <button type ="submit" name="action" value="buy">Buy now</button>
-                </form>
-            </td>
-        </tr>`
+            var td = document.createElement("td"); td.appendChild(btnAdd);
+            var btnBuyNow = document.createElement("button"); btnBuyNow.textContent = 'Buy Now';
+            tr.appendChild(td);
+            console.log(tr);
+            list.appendChild(tr);
         }
     }
+
+    //function DrawFlowerTable(result) {
+    //    var tr = '';
+    //    const NewEL = (tag, prop) => Object.assign(document.createElement(tag), prop);
+    //    for (let i = 0; i < result.length; i++) {
+    //        var v = result[i];
+    //        console.log(v);
+    //        console.log(v.category.categoryName)
+
+    //        var btnAdd = NewEL("button", {
+    //            textContent: "Add to cart",
+    //            onclick() {
+    //                var url = window.location.href + '?handler=AddCart';
+    //                $.ajax({
+    //                    type: "POST",
+    //                    //headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+    //                    url: url,
+    //                    data: {
+    //                        "id": v.flowerBouquetId
+    //                    },
+    //                    contentType: "application/x-www-form-urlencoded"
+    //                }).done(function (response) {
+    //                    alert('Add to cart');
+    //                });
+    //            },
+    //        });
+    //        console.log(btnAdd);
+    //        tr += `<tr>
+    //        <td>${v.flowerBouquetName}</td>
+    //        <td>${v.description}</td>
+    //        <td>${v.unitsInStock}</td>
+    //        <td>${v.unitsInStock}</td>
+    //        <td>${v.flowerBouquetStatus}</td>
+    //        <td>${v.category.categoryName}</td>
+    //        <td>${btnAdd}</td>
+            
+    //    </tr>`
+    //    }
+    //    //<td>
+    //    //    <form method="post" action="/User/UserIndexFlowerBouquet">
+    //    //        <input type="hidden" name="id" value="${v.flowerBouquetId}" />
+    //    //        <button type="submit" name="action" value="add" class="page-link">Add to cart</button> |
+    //    //        <button >Details</button> |
+    //    //        <button type="submit" name="action" value="buy">Buy now</button>
+    //    //    </form>
+    //    //</td>
+    //    $('#flowerTable').html(tr);
+    //}
 
     function LoadCustomers() {
         $.ajax({

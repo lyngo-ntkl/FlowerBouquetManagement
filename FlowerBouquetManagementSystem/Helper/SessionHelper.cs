@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
-namespace FlowerBouquetManagementSystem.Pages.Utils
+namespace FlowerBouquetManagementSystemWebApp.Helper
 {
     public static class SessionHelper
     {

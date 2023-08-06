@@ -8,10 +8,6 @@ namespace DTOs
 {
     public partial class FlowerBouquetDTO
     {
-        public FlowerBouquetDTO()
-        {
-            OrderDetails = new HashSet<OrderDetailDTO>();
-        }
         // generate by system
         public int FlowerBouquetId { get; set; }
         public int CategoryId { get; set; }

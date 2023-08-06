@@ -1,4 +1,5 @@
 using FlowerBouquetManagementSystem.SignalR;
+using FlowerBouquetManagementSystemWebApp.Helper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,13 +30,13 @@ namespace FlowerBouquetManagementSystem
             )
             .AddJsonOptions(options => {
                 // options.JsonSerializerOptions.PropertyNamingPolicy = null; // change default json naming policy (camelCase)
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-                options.JsonSerializerOptions.DefaultBufferSize = 10000000;
+                //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.;
+                //options.JsonSerializerOptions.DefaultBufferSize = 10000000;
                 //options.JsonSerializerOptions.MaxDepth = 64;
             })
             .AddRazorPagesOptions(options =>
             {
-                options.Conventions.AddPageRoute("/User/Index", "");
+                options.Conventions.AddPageRoute("/User/UserIndexFlowerBouquet", "");
             })
             ;
             services
@@ -74,6 +75,8 @@ namespace FlowerBouquetManagementSystem
             services.AddScoped<FlowerBouquetRepository, FlowerBouquetRepositoryImpl>();
             services.AddScoped<OrderDetailRepository, OrderDetailRepositoryImpl>();
             services.AddScoped<OrderRepository, OrderRepositoryImpl>();
+            //
+            services.AddAutoMapper(typeof(MapperProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

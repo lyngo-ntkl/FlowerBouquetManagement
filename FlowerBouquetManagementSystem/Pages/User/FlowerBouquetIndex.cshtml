@@ -67,8 +67,8 @@
                 </td>
                 <form method="post">
                     <input type="hidden" name="id" value="@item.FlowerBouquetId"/>
-                    <button asp-page-handler="AddCart" type="submit" name="action" value="add">Add to cart</button> |
-                    <button>Details</button> |
+                    <button asp-page-handler="AddCart" type="submit" name="action" value="add" class="link">Add to cart</button> |
+                    <button asp-page="./FlowerBouquetDetailsModel" asp-route-id="">Details</button> |
                     <button type ="submit" name="action" value="buy">Buy now</button>
                 </form>
         </tr>
