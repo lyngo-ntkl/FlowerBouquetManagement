@@ -4,7 +4,6 @@
 // Write your JavaScript code.
 
 $(() => {
-    LoadFlowerBouquets()
     var connection = new signalR.HubConnectionBuilder().withUrl("/flowerHub").build();
     connection.start();
 

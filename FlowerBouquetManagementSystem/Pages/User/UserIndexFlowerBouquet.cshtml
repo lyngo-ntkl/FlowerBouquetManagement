@@ -6,12 +6,12 @@
 }
 
 <h1>Flower Bouquets</h1>
-<form>
-    <label for="name">Name</label>
-    <input type="search" name="name", placeholder="Enter flower bouquet name">
-    <label for="categoryId">Category</label>
-    <select name="categoryId" asp-items="@Model.Categories"></select>
-    <button type="submit">Search</button>
+<form method="get" asp-page-handler="FlowerBouquets">
+    @*<label for="name">Name</label>*@
+    <input name="name" />
+    @*<label for="categoryId">Category</label>*@
+    @*<select name="categoryId" asp-items="@Model.Categories"></select@*>*@
+    <input type="submit" value="Search" />
 </form>
 
 <table class="table">
@@ -29,3 +29,9 @@
     <tbody id="flowerTable">
     </tbody>
 </table>
+@*@{
+    string nextButtonDisabled = !Model.FlowerBouquets.HasNext ? "disabled" : "";
+    string previousButtonDisabled = !Model.FlowerBouquets.HasPrevious ? "disabled" : "";
+}
+<a asp-page="/User/UserIndexFlowerBouquet" asp-route-pageNumber="@(Model.FlowerBouquets.CurrentPage - 1)" class="btn btn-primary @previousButtonDisabled">Previous</a>
+<a asp-page="/User/UserIndexFlowerBouquet" asp-route-pageNumber="@(Model.FlowerBouquets.CurrentPage + 1)" class="btn btn-primary @nextButtonDisabled">Next</a>*@
