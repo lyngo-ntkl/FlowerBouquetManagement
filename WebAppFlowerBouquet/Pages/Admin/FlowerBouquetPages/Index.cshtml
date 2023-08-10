@@ -1,0 +1,105 @@
+﻿@page
+@model WebAppFlowerBouquet.Pages.Admin.FlowerBouquetPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<form>
+    <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Name</label>
+        <input name="name" type="search" value="@Model.Name" class=" col-sm-2 form-control" />
+        <select name="categoryId" asp-items="ViewBag.Categories" class="col-sm-3 ml-3 form-control">
+            <option selected>All categories</option>
+        </select>
+        <select name="supplierId" asp-items="ViewBag.Suppliers" class="col-sm-3 ml-3 form-control">
+            <option>All suppliers</option>
+        </select>
+    </div>
+    <div class="form-group row">
+        <label for="id" class="col-sm-2 col-form-label">ID</label>
+        <input name="id" type="number" value="@Model.Id" class=" col-sm-2 form-control" />
+        <select name="status" class="col-sm-3 ml-3 form-control">
+            <option>All status</option>
+            <option value="1">Available</option>
+            <option value="0">Unavailable</option>
+        </select>
+    </div>
+    <button type="reset" class="btn btn-secondary">Clear filter</button>
+    <input type="submit" value="Search" class="btn btn-primary" />
+</form>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowerBouquet[0].FlowerBouquetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowerBouquet[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowerBouquet[0].UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowerBouquet[0].UnitsInStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowerBouquet[0].FlowerBouquetStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowerBouquet[0].Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowerBouquet[0].Supplier)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FlowerBouquet) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlowerBouquetName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitsInStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlowerBouquetStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier.SupplierId)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.FlowerBouquetId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.FlowerBouquetId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.FlowerBouquetId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@for(int i = 1; i <= Model.FlowerBouquet.TotalPage; i++){
+    <a asp-page="/Admin/FlowerBouquetPages/Index" 
+       asp-route-pageNumber="@i"
+       asp-route-id="@Model.Id" 
+       asp-route-name="@Model.Name" 
+       asp-route-status="@Model.Status" 
+       asp-route-categoryId="@Model.CategoryId" 
+       asp-route-supplierId="@Model.SupplierId">@i</a>
+}
